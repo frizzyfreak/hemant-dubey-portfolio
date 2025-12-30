@@ -31,12 +31,12 @@ const skillCategories = [
 const TechnicalSkillsCard = () => {
   return (
     <div className="bento-card col-span-full animate-fade-up" style={{ animationDelay: "1100ms" }}>
-      <h2 className="text-xl font-semibold mb-6 text-foreground">Technical Skills</h2>
-      <div className="space-y-4">
+      <h2 className="text-sm font-semibold mb-4 text-foreground">Technical Skills</h2>
+      <div className="space-y-3">
         {skillCategories.map((category, categoryIndex) => (
           <div key={category.category}>
-            <h3 className="text-sm font-medium text-muted-foreground mb-2">{category.category}</h3>
-            <div className="flex flex-wrap gap-2">
+            <h3 className="text-xs font-medium text-muted-foreground mb-1.5">{category.category}</h3>
+            <div className="flex flex-wrap gap-1.5">
               {category.skills.map((skill, skillIndex) => (
                 <span
                   key={skill}

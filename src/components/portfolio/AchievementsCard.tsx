@@ -16,19 +16,19 @@ const achievements = [
 const AchievementsCard = () => {
   return (
     <div className="bento-card animate-fade-up" style={{ animationDelay: "700ms" }}>
-      <div className="flex items-center gap-2 mb-4">
-        <Award className="w-5 h-5 text-foreground" />
-        <h2 className="text-xl font-semibold text-foreground">Achievements</h2>
+      <div className="flex items-center gap-2 mb-3">
+        <Award className="w-4 h-4 text-foreground" />
+        <h2 className="text-sm font-semibold text-foreground">Achievements</h2>
       </div>
-      <div className="space-y-4">
+      <div className="space-y-3">
         {achievements.map((achievement, index) => (
-          <div key={index} className="flex items-start gap-3">
-            <div className="p-2 rounded-lg bg-pastel-lavender">
-              <achievement.icon className="w-4 h-4 text-foreground" />
+          <div key={index} className="flex items-start gap-2">
+            <div className="p-1.5 rounded-lg bg-pastel-lavender">
+              <achievement.icon className="w-3 h-3 text-foreground" />
             </div>
             <div>
-              <h3 className="font-semibold text-foreground">{achievement.title}</h3>
-              <p className="text-sm text-muted-foreground">{achievement.description}</p>
+              <h3 className="font-medium text-sm text-foreground">{achievement.title}</h3>
+              <p className="text-xs text-muted-foreground">{achievement.description}</p>
             </div>
           </div>
         ))}

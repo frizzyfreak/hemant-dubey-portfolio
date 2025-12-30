@@ -30,29 +30,29 @@ const experiences = [
 const ExperienceCard = () => {
   return (
     <div className="bento-card animate-fade-up" style={{ animationDelay: "200ms" }}>
-      <div className="flex items-center gap-2 mb-6">
-        <Briefcase className="w-5 h-5 text-foreground" />
-        <h2 className="text-xl font-semibold text-foreground">Experience</h2>
+      <div className="flex items-center gap-2 mb-4">
+        <Briefcase className="w-4 h-4 text-foreground" />
+        <h2 className="text-sm font-semibold text-foreground">Experience</h2>
       </div>
       <div className="relative">
         {/* Timeline line */}
-        <div className="absolute left-[7px] top-2 bottom-2 w-[2px] bg-border" />
+        <div className="absolute left-[5px] top-2 bottom-2 w-[2px] bg-border" />
         
-        <div className="space-y-6">
+        <div className="space-y-4">
           {experiences.map((exp, index) => (
-            <div key={index} className="relative pl-6">
+            <div key={index} className="relative pl-5">
               {/* Timeline dot */}
-              <div className="absolute left-0 top-2 w-4 h-4 rounded-full bg-primary border-4 border-card" />
+              <div className="absolute left-0 top-1.5 w-3 h-3 rounded-full bg-primary border-2 border-card" />
               
-              <div className="space-y-1">
+              <div className="space-y-0.5">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
-                  <h3 className="font-semibold text-foreground">{exp.title}</h3>
-                  <span className="text-xs text-muted-foreground bg-muted px-2 py-1 rounded-full w-fit">
+                  <h3 className="font-medium text-sm text-foreground">{exp.title}</h3>
+                  <span className="text-[10px] text-muted-foreground bg-muted px-2 py-0.5 rounded-full w-fit">
                     {exp.period}
                   </span>
                 </div>
-                <p className="text-sm font-medium text-muted-foreground">{exp.company}</p>
-                <p className="text-sm text-muted-foreground">{exp.description}</p>
+                <p className="text-xs font-medium text-muted-foreground">{exp.company}</p>
+                <p className="text-xs text-muted-foreground">{exp.description}</p>
               </div>
             </div>
           ))}

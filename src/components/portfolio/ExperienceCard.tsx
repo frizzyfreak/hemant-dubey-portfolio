@@ -30,29 +30,30 @@ const experiences = [
 const ExperienceCard = () => {
   return (
     <div className="bento-card animate-fade-up" style={{ animationDelay: "200ms" }}>
-      <div className="flex items-center gap-2 mb-4">
-        <Briefcase className="w-4 h-4 text-foreground" />
-        <h2 className="text-sm font-semibold text-foreground">Experience</h2>
+      <div className="flex items-center gap-2 mb-3">
+        <Briefcase className="w-3 h-3 text-foreground" />
+        <h2 className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Experience</h2>
       </div>
+      <div className="border-t border-border mb-3" />
       <div className="relative">
         {/* Timeline line */}
-        <div className="absolute left-[5px] top-2 bottom-2 w-[2px] bg-border" />
+        <div className="absolute left-[4px] top-1.5 bottom-1.5 w-[1.5px] bg-border" />
         
-        <div className="space-y-4">
+        <div className="space-y-3">
           {experiences.map((exp, index) => (
-            <div key={index} className="relative pl-5">
+            <div key={index} className="relative pl-4">
               {/* Timeline dot */}
-              <div className="absolute left-0 top-1.5 w-3 h-3 rounded-full bg-primary border-2 border-card" />
+              <div className="absolute left-0 top-1 w-2 h-2 rounded-full bg-primary border-2 border-card" />
               
               <div className="space-y-0.5">
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
-                  <h3 className="font-medium text-sm text-foreground">{exp.title}</h3>
-                  <span className="text-[10px] text-muted-foreground bg-muted px-2 py-0.5 rounded-full w-fit">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-0.5">
+                  <h3 className="font-medium text-xs text-foreground">{exp.title}</h3>
+                  <span className="text-[9px] text-muted-foreground bg-muted px-1.5 py-0.5 rounded-full w-fit">
                     {exp.period}
                   </span>
                 </div>
-                <p className="text-xs font-medium text-muted-foreground">{exp.company}</p>
-                <p className="text-xs text-muted-foreground">{exp.description}</p>
+                <p className="text-[10px] font-medium text-muted-foreground">{exp.company}</p>
+                <p className="text-[10px] text-muted-foreground leading-relaxed">{exp.description}</p>
               </div>
             </div>
           ))}

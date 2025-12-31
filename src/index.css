@@ -127,7 +127,7 @@
 
 @layer utilities {
   .bento-card {
-    @apply bg-card rounded-2xl border border-border p-6 transition-all duration-500 ease-out cursor-pointer;
+    @apply bg-card rounded-2xl border border-border p-4 transition-all duration-500 ease-out cursor-pointer;
     box-shadow: var(--shadow-card);
   }
 
@@ -156,6 +156,16 @@
   .bento-card:hover .bg-pastel-pink,
   .bento-card:hover .bg-pastel-yellow {
     @apply bg-primary-foreground/15;
+  }
+
+  .bento-card-static {
+    @apply bg-card rounded-2xl border border-border p-4 transition-all duration-300 ease-out;
+    box-shadow: var(--shadow-card);
+  }
+
+  .bento-card-static:hover {
+    box-shadow: var(--shadow-card-hover);
+    transform: translateY(-2px);
   }
 
   .bento-card-featured {
@@ -218,6 +228,11 @@
   .hover-glow:hover {
     box-shadow: 0 0 30px hsl(var(--primary) / 0.3);
   }
+
+  .animate-gradient-shift {
+    background-size: 400% 400%;
+    animation: gradientShift 15s ease infinite;
+  }
 }
 
 @keyframes float {
@@ -273,5 +288,17 @@
   }
   to {
     transform: rotate(360deg);
+  }
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
   }
 }

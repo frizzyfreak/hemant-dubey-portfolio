@@ -25,36 +25,37 @@ const projects: Project[] = [
 const ProjectsSection = () => {
   return (
     <div className="bento-card animate-fade-up" style={{ animationDelay: "800ms" }}>
-      <div className="flex items-center gap-2 mb-4">
-        <div className="w-2 h-2 rounded-full bg-pastel-mint" />
-        <h2 className="text-sm font-medium text-muted-foreground uppercase tracking-wide">Projects</h2>
+      <div className="flex items-center gap-2 mb-2">
+        <div className="w-1.5 h-1.5 rounded-full bg-pastel-mint" />
+        <h2 className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Projects</h2>
       </div>
+      <div className="border-t border-border mb-2" />
       
-      <div className="space-y-2 max-h-64 overflow-y-auto pr-2 scrollbar-thin">
+      <div className="space-y-2 max-h-56 overflow-y-auto pr-2 scrollbar-thin">
         {projects.map((project, index) => (
           <div
             key={project.title}
             className={cn(
-              "group p-4 rounded-xl border border-border cursor-pointer transition-all duration-300",
+              "group p-3 rounded-lg border border-border cursor-pointer transition-all duration-300",
               "hover:bg-primary hover:border-primary"
             )}
           >
-            <div className="flex items-start gap-3">
-              <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center flex-shrink-0 group-hover:bg-primary-foreground transition-colors">
-                <span className="text-foreground font-bold text-sm group-hover:text-primary transition-colors">
+            <div className="flex items-start gap-2.5">
+              <div className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center flex-shrink-0 group-hover:bg-primary-foreground transition-colors">
+                <span className="text-foreground font-bold text-xs group-hover:text-primary transition-colors">
                   {project.title.charAt(0)}
                 </span>
               </div>
               <div className="flex-1 min-w-0">
-                <h3 className="font-semibold text-sm text-foreground group-hover:text-primary-foreground transition-colors flex items-center gap-2">
+                <h3 className="font-semibold text-xs text-foreground group-hover:text-primary-foreground transition-colors flex items-center gap-1.5">
                   {project.title}
                   {project.featured && (
-                    <span className="text-[10px] bg-pastel-orange text-foreground px-1.5 py-0.5 rounded group-hover:bg-primary-foreground group-hover:text-primary transition-colors">
+                    <span className="text-[8px] bg-pastel-orange text-foreground px-1 py-0.5 rounded group-hover:bg-primary-foreground group-hover:text-primary transition-colors">
                       Featured
                     </span>
                   )}
                 </h3>
-                <p className="text-xs text-muted-foreground mt-1 line-clamp-2 group-hover:text-primary-foreground/80 transition-colors">
+                <p className="text-[10px] text-muted-foreground mt-0.5 line-clamp-2 group-hover:text-primary-foreground/80 transition-colors">
                   {project.description}
                 </p>
               </div>

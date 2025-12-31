@@ -21,12 +21,12 @@ const ClockWidget = () => {
   };
 
   return (
-    <div className="bento-card animate-fade-up flex flex-col items-center justify-center text-center py-6" style={{ animationDelay: "400ms" }}>
-      <h2 className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-4 self-start">Clock</h2>
-      <div className="text-4xl font-bold tracking-widest text-foreground font-digital">
+    <div className="bento-card animate-fade-up flex flex-col items-center justify-center text-center py-4" style={{ animationDelay: "400ms" }}>
+      <h2 className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-3 self-start">Clock</h2>
+      <div className="text-3xl font-bold tracking-widest text-foreground font-digital">
         {formatTime(time)}
       </div>
-      <div className="text-sm text-primary mt-3 font-medium">
+      <div className="text-xs text-primary mt-2 font-medium">
         Faridabad, Haryana
       </div>
     </div>

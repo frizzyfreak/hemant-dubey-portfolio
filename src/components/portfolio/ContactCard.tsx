@@ -26,21 +26,22 @@ const contacts = [
 const ContactCard = () => {
   return (
     <div className="bento-card animate-fade-up" style={{ animationDelay: "500ms" }}>
-      <h2 className="text-sm font-semibold mb-3 text-foreground">Get In Touch</h2>
-      <div className="flex flex-col gap-1.5">
+      <h2 className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-2">Get In Touch</h2>
+      <div className="border-t border-border mb-2" />
+      <div className="flex flex-col gap-1">
         {contacts.map((contact) => (
           <a
             key={contact.label}
             href={contact.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="group flex items-center justify-between p-2.5 rounded-xl bg-muted/50 hover:bg-muted transition-all duration-200"
+            className="group flex items-center justify-between p-2 rounded-lg bg-muted/50 hover:bg-muted transition-all duration-200"
           >
             <div className="flex items-center gap-2">
-              <contact.icon className="w-3.5 h-3.5 text-muted-foreground group-hover:text-foreground transition-colors" />
+              <contact.icon className="w-3 h-3 text-muted-foreground group-hover:text-foreground transition-colors" />
               <span className="text-xs font-medium text-foreground">{contact.label}</span>
             </div>
-            <ArrowUpRight className="w-3.5 h-3.5 text-muted-foreground group-hover:text-foreground group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
+            <ArrowUpRight className="w-3 h-3 text-muted-foreground group-hover:text-foreground group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
           </a>
         ))}
       </div>

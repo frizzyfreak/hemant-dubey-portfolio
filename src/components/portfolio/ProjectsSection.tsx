@@ -36,7 +36,7 @@ const ProjectsSection = () => {
             key={project.title}
             className={cn(
               "group p-4 rounded-xl border border-border cursor-pointer transition-all duration-300",
-              "hover:bg-primary hover:border-primary"
+              "hover:-translate-y-1 hover:bg-pastel-mint hover:border-foreground hover:shadow-lg"
             )}
           >
             <div className="flex items-start gap-3">

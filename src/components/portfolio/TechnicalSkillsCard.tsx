@@ -7,14 +7,14 @@ const skills = [
 
 const TechnicalSkillsCard = () => {
   return (
-    <div className="bento-card-static col-span-full animate-fade-up" style={{ animationDelay: "1100ms" }}>
+    <div className="bento-card-static animate-fade-up" style={{ animationDelay: "650ms" }}>
       <h2 className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-2">Skills</h2>
       <div className="border-t border-border mb-3" />
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap gap-1.5">
         {skills.map((skill) => (
           <span
             key={skill}
-            className="px-3 py-1 text-xs font-medium border border-border rounded-full 
+            className="px-2 py-1 text-[10px] font-medium border border-border rounded-full 
                        text-foreground bg-transparent cursor-pointer
                        transition-all duration-300 ease-out
                        hover:bg-primary hover:text-primary-foreground hover:border-primary

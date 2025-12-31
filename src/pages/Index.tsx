@@ -30,17 +30,15 @@ const Index = () => {
             <ClockWidget />
             <ContactCard />
             <WhatIDoCard />
-            <AchievementsCard />
+            <TechnicalSkillsCard />
           </div>
 
           {/* Right Column - Projects */}
           <div className="lg:col-span-1 space-y-3 sm:space-y-4">
             <EducationCard />
             <ProjectsSection />
+            <AchievementsCard />
           </div>
-
-          {/* Full Width - Technical Skills */}
-          <TechnicalSkillsCard />
 
           {/* Footer */}
           <Footer />

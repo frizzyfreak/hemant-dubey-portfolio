@@ -35,7 +35,7 @@ const ExperienceCard = () => {
         <h2 className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Experience</h2>
       </div>
       <div className="border-t border-border mb-3" />
-      <div className="relative">
+      <div className="relative max-h-64 overflow-y-auto pr-2 scrollbar-thin">
         {/* Timeline line */}
         <div className="absolute left-[4px] top-1.5 bottom-1.5 w-[1.5px] bg-border" />
         

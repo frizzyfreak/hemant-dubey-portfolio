@@ -127,13 +127,35 @@
 
 @layer utilities {
   .bento-card {
-    @apply bg-card rounded-2xl border border-border p-6 transition-all duration-300 ease-out;
+    @apply bg-card rounded-2xl border border-border p-6 transition-all duration-500 ease-out cursor-pointer;
     box-shadow: var(--shadow-card);
   }
 
   .bento-card:hover {
+    @apply bg-primary border-primary;
     box-shadow: var(--shadow-card-hover);
-    transform: translateY(-2px);
+    transform: translateY(-4px) scale(1.01);
+  }
+
+  .bento-card:hover * {
+    @apply text-primary-foreground;
+  }
+
+  .bento-card:hover .text-muted-foreground {
+    @apply text-primary-foreground/80;
+  }
+
+  .bento-card:hover .skill-tag {
+    @apply bg-primary-foreground/20 text-primary-foreground;
+  }
+
+  .bento-card:hover .bg-pastel-lavender,
+  .bento-card:hover .bg-pastel-orange,
+  .bento-card:hover .bg-pastel-blue,
+  .bento-card:hover .bg-pastel-mint,
+  .bento-card:hover .bg-pastel-pink,
+  .bento-card:hover .bg-pastel-yellow {
+    @apply bg-primary-foreground/15;
   }
 
   .bento-card-featured {
@@ -141,11 +163,11 @@
   }
 
   .skill-tag {
-    @apply inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium transition-transform duration-200;
+    @apply inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium transition-all duration-300;
   }
 
   .skill-tag:hover {
-    transform: scale(1.05);
+    transform: scale(1.08);
   }
 
   .font-digital {
@@ -177,6 +199,25 @@
   .animate-stagger {
     animation: fadeUp 0.6s ease-out forwards;
   }
+
+  .animate-shimmer {
+    background: linear-gradient(
+      90deg,
+      hsl(var(--card)) 0%,
+      hsl(var(--muted)) 50%,
+      hsl(var(--card)) 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 2s infinite;
+  }
+
+  .animate-pulse-slow {
+    animation: pulse-slow 3s ease-in-out infinite;
+  }
+
+  .hover-glow:hover {
+    box-shadow: 0 0 30px hsl(var(--primary) / 0.3);
+  }
 }
 
 @keyframes float {
@@ -205,5 +246,32 @@
   }
   50% {
     box-shadow: 0 0 0 8px hsl(var(--primary) / 0);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes pulse-slow {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+@keyframes rotate-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
   }
 }

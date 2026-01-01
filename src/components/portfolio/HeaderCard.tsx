@@ -1,5 +1,6 @@
 import { Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import ThemeToggle from "@/components/ThemeToggle";
 
 const HeaderCard = () => {
   return (
@@ -12,15 +13,18 @@ const HeaderCard = () => {
           Product Management. Designing. GenAI Enthusiast.
         </p>
       </div>
-      <Button 
-        asChild
-        className="rounded-full px-4 py-1.5 text-xs bg-primary text-primary-foreground hover:bg-primary/90 transition-all duration-200 hover:scale-105"
-      >
-        <a href="mailto:hdubey_be22@thapar.edu">
-          <Mail className="w-3 h-3 mr-1.5" />
-          Contact Me
-        </a>
-      </Button>
+      <div className="flex items-center gap-3">
+        <ThemeToggle />
+        <Button 
+          asChild
+          className="rounded-full px-4 py-1.5 text-xs bg-primary text-primary-foreground hover:bg-primary/90 transition-all duration-200 hover:scale-105"
+        >
+          <a href="mailto:hdubey_be22@thapar.edu">
+            <Mail className="w-3 h-3 mr-1.5" />
+            Contact Me
+          </a>
+        </Button>
+      </div>
     </div>
   );
 };

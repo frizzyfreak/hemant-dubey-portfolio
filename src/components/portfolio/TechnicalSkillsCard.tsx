@@ -9,7 +9,7 @@ const skills = [
 
 const TechnicalSkillsCard = () => {
   return (
-    <div className="bento-card-static animate-fade-up" style={{ animationDelay: "650ms" }}>
+    <div className="bento-card-static animate-fade-up h-full" style={{ animationDelay: "650ms" }}>
       <h2 className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-2">Skills</h2>
       <div className="border-t border-border mb-3" />
       <div className="flex flex-wrap gap-1.5">

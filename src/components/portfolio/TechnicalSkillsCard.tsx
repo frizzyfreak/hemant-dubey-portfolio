@@ -1,8 +1,10 @@
 const skills = [
-  "Python", "SQL", "C++", "HTML", "CSS", "TensorFlow", "PyTorch", "NLP", 
-  "GenAI", "Conversational AI", "Speech Recognition", "Product Lifecycle", 
+  "Python", "SQL", "C++", "HTML", "CSS", "JavaScript", "TensorFlow", "PyTorch", 
+  "NLP", "GenAI", "Keras", "NumPy", "pandas", "scikit-learn", "Conversational AI", 
+  "Speech Recognition", "Predictive Modeling", "PCA", "Product Lifecycle", 
   "Defining KPIs", "A/B Testing", "PowerBI", "Excel", "Scrum", "Agile", 
-  "Docker", "Figma", "MySQL", "GCP", "Machine Learning", "Data Pipelines"
+  "Docker", "Figma", "MySQL", "GCP", "Machine Learning", "Data Pipelines",
+  "Apache Spark", "Databricks", "Streamlit", "MATLAB", "Linux", "GitHub"
 ];
 
 const TechnicalSkillsCard = () => {

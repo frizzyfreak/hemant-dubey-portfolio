@@ -4,6 +4,7 @@ interface Project {
   title: string;
   description: string;
   featured?: boolean;
+  link?: string;
 }
 
 const projects: Project[] = [
@@ -11,14 +12,17 @@ const projects: Project[] = [
     title: "YouNotes",
     description: "AI Study Guide + Quiz Generator using just YouTube links. Built with LangGraph & YouTube Transcript API.",
     featured: true,
+    link: "https://ai-agentic-study-buddy-d8ec6ec5b559.herokuapp.com/",
   },
   {
     title: "Speech Intent Recognizer",
     description: "End-to-end voice command classification achieving 98.84% accuracy using fine-tuned Wav2Vec2.",
+    link: "https://huggingface.co/spaces/Frizzyfreak/Speech-Intent-Recognition",
   },
   {
     title: "Movie Recommender",
     description: "Hybrid recommendation model using Matrix Factorization and KNN. RMSE 0.76 with 87% genre accuracy.",
+    link: "https://frizzymovierecommender.streamlit.app/",
   },
 ];
 
@@ -33,10 +37,13 @@ const ProjectsSection = () => {
       
       <div className="space-y-2 max-h-56 overflow-y-auto pr-2 scrollbar-thin">
         {projects.map((project, index) => (
-          <div
+          <a
             key={project.title}
+            href={project.link}
+            target="_blank"
+            rel="noopener noreferrer"
             className={cn(
-              "group p-3 rounded-lg border border-border cursor-pointer transition-all duration-300",
+              "group block p-3 rounded-lg border border-border cursor-pointer transition-all duration-300",
               "hover:bg-primary hover:border-primary"
             )}
           >
@@ -54,13 +61,21 @@ const ProjectsSection = () => {
                       Featured
                     </span>
                   )}
+                  {/* Live indicator */}
+                  <span className="flex items-center gap-1 ml-auto">
+                    <span className="relative flex h-2 w-2">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+                    </span>
+                    <span className="text-[8px] text-muted-foreground group-hover:text-primary-foreground/80 uppercase font-medium">Live</span>
+                  </span>
                 </h3>
                 <p className="text-[10px] text-muted-foreground mt-0.5 line-clamp-2 group-hover:text-primary-foreground/80 transition-colors">
                   {project.description}
                 </p>
               </div>
             </div>
-          </div>
+          </a>
         ))}
       </div>
     </div>

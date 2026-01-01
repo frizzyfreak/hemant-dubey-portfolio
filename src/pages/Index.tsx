@@ -8,6 +8,7 @@ import WhatIDoCard from "@/components/portfolio/WhatIDoCard";
 import AchievementsCard from "@/components/portfolio/AchievementsCard";
 import ProjectsSection from "@/components/portfolio/ProjectsSection";
 import TechnicalSkillsCard from "@/components/portfolio/TechnicalSkillsCard";
+import GitHubContributions from "@/components/portfolio/GitHubContributions";
 import Footer from "@/components/portfolio/Footer";
 
 const Index = () => {
@@ -30,7 +31,6 @@ const Index = () => {
             <ClockWidget />
             <ContactCard />
             <WhatIDoCard />
-            <TechnicalSkillsCard />
           </div>
 
           {/* Right Column - Projects */}
@@ -38,6 +38,12 @@ const Index = () => {
             <EducationCard />
             <ProjectsSection />
             <AchievementsCard />
+          </div>
+
+          {/* Skills Row - Full Width */}
+          <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
+            <TechnicalSkillsCard />
+            <GitHubContributions />
           </div>
 
           {/* Footer */}

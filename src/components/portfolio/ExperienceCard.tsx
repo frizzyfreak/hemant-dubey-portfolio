@@ -2,9 +2,9 @@ import { Briefcase } from "lucide-react";
 
 const experiences = [
   {
-    title: "Product Manager",
+    title: "Product Manager Intern",
     company: "AdvantageClub.ai",
-    period: "Current",
+    period: "Jan 2026 - June 2026",
     description: "Leading product initiatives and driving AI-powered solutions.",
   },
   {
@@ -48,7 +48,7 @@ const ExperienceCard = () => {
               <div className="space-y-0.5">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-0.5">
                   <h3 className="font-medium text-xs text-foreground">{exp.title}</h3>
-                  <span className="text-[9px] text-muted-foreground bg-muted px-1.5 py-0.5 rounded-full w-fit">
+                  <span className="text-[9px] text-foreground bg-muted px-1.5 py-0.5 rounded-full w-fit experience-period">
                     {exp.period}
                   </span>
                 </div>

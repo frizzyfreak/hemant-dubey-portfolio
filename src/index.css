@@ -145,6 +145,10 @@
     @apply text-primary-foreground/80;
   }
 
+  .bento-card:hover .experience-period {
+    @apply text-foreground bg-primary-foreground;
+  }
+
   .bento-card:hover .skill-tag {
     @apply bg-primary-foreground/20 text-primary-foreground;
   }

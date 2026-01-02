@@ -17,7 +17,7 @@ const projects: Project[] = [
   {
     title: "MindFit",
     description: "Automated psychological screening pipeline using Google Apps Script & PHQ-9 dataset. Built at DRDO.",
-    link: undefined,
+    link: "https://mindfit-drdo.streamlit.app/",
   },
   {
     title: "Speech Intent Recognizer",

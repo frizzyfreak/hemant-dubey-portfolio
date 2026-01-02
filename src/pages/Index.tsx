@@ -10,10 +10,13 @@ import ProjectsSection from "@/components/portfolio/ProjectsSection";
 import TechnicalSkillsCard from "@/components/portfolio/TechnicalSkillsCard";
 import GitHubContributions from "@/components/portfolio/GitHubContributions";
 import Footer from "@/components/portfolio/Footer";
+import AnimatedCat from "@/components/portfolio/AnimatedCat";
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/30 animate-gradient-shift">
+    <>
+      <AnimatedCat />
+      <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/30 animate-gradient-shift">
       <div className="container max-w-6xl mx-auto px-4 py-6 sm:py-10">
         {/* Bento Grid Layout */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
@@ -50,7 +53,8 @@ const Index = () => {
           <Footer />
         </div>
       </div>
-    </div>
+      </div>
+    </>
   );
 };
 

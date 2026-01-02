@@ -10,51 +10,49 @@ import ProjectsSection from "@/components/portfolio/ProjectsSection";
 import TechnicalSkillsCard from "@/components/portfolio/TechnicalSkillsCard";
 import GitHubContributions from "@/components/portfolio/GitHubContributions";
 import Footer from "@/components/portfolio/Footer";
-import AnimatedCat from "@/components/portfolio/AnimatedCat";
 
 const Index = () => {
   return (
-    <>
-      <AnimatedCat />
-      <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/30 animate-gradient-shift">
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/30 animate-gradient-shift">
       <div className="container max-w-6xl mx-auto px-4 py-6 sm:py-10">
         {/* Bento Grid Layout */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3">
           {/* Header - Full Width */}
           <HeaderCard />
 
           {/* Left Column */}
-          <div className="lg:col-span-1 space-y-3 sm:space-y-4">
+          <div className="lg:col-span-1 space-y-2 sm:space-y-3">
             <AboutCard />
             <ExperienceCard />
           </div>
 
           {/* Center Column */}
-          <div className="lg:col-span-1 space-y-3 sm:space-y-4">
+          <div className="lg:col-span-1 space-y-2 sm:space-y-3">
             <ClockWidget />
             <ContactCard />
             <WhatIDoCard />
           </div>
 
           {/* Right Column - Projects */}
-          <div className="lg:col-span-1 space-y-3 sm:space-y-4">
+          <div className="lg:col-span-1 space-y-2 sm:space-y-3">
             <EducationCard />
             <ProjectsSection />
             <AchievementsCard />
           </div>
 
-          {/* Skills Row - Full Width */}
-          <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
-            <TechnicalSkillsCard />
+          {/* Skills - Single Column */}
+          <TechnicalSkillsCard />
+
+          {/* GitHub Contributions - Full 2 Column Width */}
+          <div className="lg:col-span-2">
             <GitHubContributions />
           </div>
 
-          {/* Footer */}
+          {/* Footer - Full Width */}
           <Footer />
         </div>
       </div>
-      </div>
-    </>
+    </div>
   );
 };
 

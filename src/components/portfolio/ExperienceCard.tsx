@@ -1,5 +1,4 @@
 import { Briefcase } from "lucide-react";
-import SittingCat from "./SittingCat";
 
 const experiences = [
   {
@@ -18,20 +17,19 @@ const experiences = [
     title: "ML Project Trainee",
     company: "Solid State Physics Laboratory, DRDO",
     period: "June 2025 - July 2025",
-    description: "Engineered automated data pipelines saving psychologists 2-3 hours/week. Developed 'MindFit' screening tools.",
+    description: "Engineered automated data pipelines saving psychologists 2-3 hours/week. Developed 'MindFit' screening tools for mental health assessment. Built predictive models using Python and scikit-learn for personnel evaluation. Collaborated with defense scientists to optimize data collection workflows.",
   },
   {
     title: "Executive Board Member",
     company: "Fine Arts Society",
     period: "Oct 2023 - May 2025",
-    description: "Directed visual vision for KaleidoScope (5000+ attendees).",
+    description: "Directed visual vision for KaleidoScope (5000+ attendees). Led a team of 15+ designers for promotional campaigns and event branding. Managed cross-functional coordination between cultural clubs and administration. Spearheaded digital marketing initiatives increasing event engagement by 40%.",
   },
 ];
 
 const ExperienceCard = () => {
   return (
     <div className="bento-card animate-fade-up relative" style={{ animationDelay: "200ms" }}>
-      <SittingCat />
       <div className="flex items-center gap-2 mb-3">
         <Briefcase className="w-3 h-3 text-foreground" />
         <h2 className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Experience</h2>

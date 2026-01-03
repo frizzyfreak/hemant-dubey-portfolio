@@ -1,6 +1,9 @@
+import CatSilhouette from "./CatSilhouette";
+
 const AboutCard = () => {
   return (
-    <div className="bento-card animate-fade-up" style={{ animationDelay: "100ms" }}>
+    <div className="bento-card animate-fade-up relative" style={{ animationDelay: "100ms" }}>
+      <CatSilhouette position="top-left" />
       <h2 className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-2">About Me</h2>
       <div className="border-t border-border mb-2" />
       <p className="text-[11px] text-muted-foreground leading-relaxed">

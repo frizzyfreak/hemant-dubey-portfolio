@@ -1,8 +1,10 @@
 import { GraduationCap } from "lucide-react";
+import CatSilhouette from "./CatSilhouette";
 
 const EducationCard = () => {
   return (
-    <div className="bento-card animate-fade-up" style={{ animationDelay: "300ms" }}>
+    <div className="bento-card animate-fade-up relative" style={{ animationDelay: "300ms" }}>
+      <CatSilhouette position="top-right" />
       <div className="flex items-center gap-2 mb-2">
         <GraduationCap className="w-3 h-3 text-foreground" />
         <h2 className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Education</h2>

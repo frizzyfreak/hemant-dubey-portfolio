@@ -1,6 +1,10 @@
 import { useState, useEffect } from "react";
 
-const SittingCat = () => {
+interface SittingCatProps {
+  position?: "left" | "right";
+}
+
+const SittingCat = ({ position = "left" }: SittingCatProps) => {
   const [isCleaningFace, setIsCleaningFace] = useState(false);
 
   useEffect(() => {
@@ -12,41 +16,47 @@ const SittingCat = () => {
     return () => clearInterval(cleanInterval);
   }, []);
 
+  const isLeft = position === "left";
+  const positionClasses = isLeft ? "-top-2 -left-2" : "-top-2 -right-2";
+
   return (
-    <div className="absolute -top-3 -left-3 z-10">
-      <div className="relative">
-        {/* Cat body */}
-        <div className="relative w-7 h-5 bg-foreground/80 rounded-[50%_50%_50%_50%/60%_60%_40%_40%]">
+    <div className={`absolute ${positionClasses} z-10`}>
+      <div className={`relative ${!isLeft ? "scale-x-[-1]" : ""}`}>
+        {/* Cat silhouette - sitting pose */}
+        <svg 
+          width="24" 
+          height="20" 
+          viewBox="0 0 24 20" 
+          className="fill-foreground/80"
+        >
           {/* Ears */}
-          <div className="absolute -top-2 left-0.5 w-0 h-0 border-l-[3px] border-l-transparent border-r-[3px] border-r-transparent border-b-[5px] border-b-foreground/80" />
-          <div className="absolute -top-2 right-0.5 w-0 h-0 border-l-[3px] border-l-transparent border-r-[3px] border-r-transparent border-b-[5px] border-b-foreground/80" />
+          <polygon points="4,6 6,0 8,6" />
+          <polygon points="16,6 18,0 20,6" />
           
-          {/* Inner ears */}
-          <div className="absolute -top-1 left-1 w-0 h-0 border-l-[2px] border-l-transparent border-r-[2px] border-r-transparent border-b-[3px] border-b-primary/40" />
-          <div className="absolute -top-1 right-1 w-0 h-0 border-l-[2px] border-l-transparent border-r-[2px] border-r-transparent border-b-[3px] border-b-primary/40" />
+          {/* Head */}
+          <ellipse cx="12" cy="8" rx="8" ry="6" />
           
           {/* Eyes */}
-          <div className="absolute top-1.5 left-1 w-1.5 h-1.5 bg-primary rounded-full">
-            <div className="absolute top-0 left-0.5 w-0.5 h-0.5 bg-background rounded-full" />
-          </div>
-          <div className="absolute top-1.5 right-1 w-1.5 h-1.5 bg-primary rounded-full">
-            <div className="absolute top-0 left-0.5 w-0.5 h-0.5 bg-background rounded-full" />
-          </div>
+          <circle cx="9" cy="7" r="1.5" className="fill-primary" />
+          <circle cx="15" cy="7" r="1.5" className="fill-primary" />
+          <circle cx="9.3" cy="6.5" r="0.5" className="fill-background" />
+          <circle cx="15.3" cy="6.5" r="0.5" className="fill-background" />
           
           {/* Nose */}
-          <div className="absolute top-3 left-1/2 -translate-x-1/2 w-1 h-0.5 bg-primary/50 rounded-full" />
+          <ellipse cx="12" cy="10" rx="1" ry="0.5" className="fill-primary/50" />
           
-          {/* Whiskers */}
-          <div className="absolute top-3 left-0 w-2 h-[1px] bg-foreground/40 -rotate-12" />
-          <div className="absolute top-3.5 left-0 w-2 h-[1px] bg-foreground/40 rotate-12" />
-          <div className="absolute top-3 right-0 w-2 h-[1px] bg-foreground/40 rotate-12" />
-          <div className="absolute top-3.5 right-0 w-2 h-[1px] bg-foreground/40 -rotate-12" />
-        </div>
+          {/* Body sitting */}
+          <ellipse cx="12" cy="17" rx="6" ry="4" />
+          
+          {/* Front paws */}
+          <ellipse cx="8" cy="19" rx="2" ry="1.5" />
+          <ellipse cx="16" cy="19" rx="2" ry="1.5" />
+        </svg>
         
-        {/* Paw for cleaning - only shows when cleaning */}
+        {/* Paw for cleaning */}
         {isCleaningFace && (
           <div 
-            className="absolute top-1 -right-1 w-2 h-3 bg-foreground/80 rounded-full origin-bottom"
+            className="absolute top-2 right-0 w-2 h-3 bg-foreground/80 rounded-full origin-bottom"
             style={{
               animation: "pawClean 0.5s ease-in-out infinite",
             }}
@@ -55,15 +65,11 @@ const SittingCat = () => {
         
         {/* Tail */}
         <div 
-          className="absolute -right-4 top-2 w-5 h-1.5 bg-foreground/80 rounded-full origin-left"
+          className="absolute -right-4 top-3 w-5 h-1.5 bg-foreground/80 rounded-full origin-left"
           style={{
             animation: "tailWag 0.8s ease-in-out infinite alternate",
           }}
         />
-        
-        {/* Front legs (sitting) */}
-        <div className="absolute bottom-0 left-0.5 w-1.5 h-1.5 bg-foreground/80 rounded-full" />
-        <div className="absolute bottom-0 right-0.5 w-1.5 h-1.5 bg-foreground/80 rounded-full" />
       </div>
       
       <style>{`

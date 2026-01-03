@@ -18,21 +18,20 @@ const experiences = [
     title: "ML Project Trainee",
     company: "Solid State Physics Laboratory, DRDO",
     period: "June 2025 - July 2025",
-    description: "Engineered automated data pipelines saving psychologists 2-3 hours/week. Developed 'MindFit' screening tools for mental health assessment. Collaborated with defense research scientists on AI-driven behavioral analysis systems.",
+    description: "Engineered automated data pipelines saving psychologists 2-3 hours/week. Developed 'MindFit' screening tools.",
   },
   {
     title: "Executive Board Member",
     company: "Fine Arts Society",
     period: "Oct 2023 - May 2025",
-    description: "Directed visual vision for KaleidoScope (5000+ attendees). Led a team of 20+ designers and coordinated cross-functional creative initiatives. Managed event branding, promotional campaigns, and stakeholder communications.",
+    description: "Directed visual vision for KaleidoScope (5000+ attendees).",
   },
 ];
 
 const ExperienceCard = () => {
   return (
     <div className="bento-card animate-fade-up relative" style={{ animationDelay: "200ms" }}>
-      <SittingCat position="left" />
-      <SittingCat position="right" />
+      <SittingCat />
       <div className="flex items-center gap-2 mb-3">
         <Briefcase className="w-3 h-3 text-foreground" />
         <h2 className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Experience</h2>

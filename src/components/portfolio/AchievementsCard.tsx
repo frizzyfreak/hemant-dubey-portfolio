@@ -4,14 +4,14 @@ const achievements = [
   {
     icon: Trophy,
     title: "Amazon ML Summer School",
-    description: "Selected 2x (1 of 80,000+ applicants)",
+    description: "Selected twice (1 of 80,000+ applicants)",
     highlighted: false,
   },
   {
     icon: Briefcase,
     title: "ML Trainee Internship at DRDO",
     description: "Built 'MindFit' automated screening tools at SSPL Lab",
-    highlighted: true,
+    highlighted: false,
   },
   {
     icon: Award,
@@ -33,23 +33,14 @@ const AchievementsCard = () => {
         {achievements.map((achievement, index) => (
           <div 
             key={index} 
-            className={`flex items-start gap-2 p-1.5 rounded-lg transition-all duration-200 ${
-              achievement.highlighted 
-                ? "bg-primary/10 border border-primary/30 dark:bg-primary/20 dark:border-primary/40" 
-                : ""
-            }`}
+            className="flex items-start gap-2 p-1.5 rounded-lg transition-all duration-200"
           >
-            <div className={`p-1 rounded-lg ${achievement.highlighted ? "bg-primary/20" : "bg-pastel-lavender"}`}>
-              <achievement.icon className={`w-2.5 h-2.5 ${achievement.highlighted ? "text-primary" : "text-foreground"}`} />
+            <div className="p-1 rounded-lg bg-pastel-lavender">
+              <achievement.icon className="w-2.5 h-2.5 text-foreground" />
             </div>
             <div>
-              <h3 className={`font-medium text-xs ${achievement.highlighted ? "text-primary" : "text-foreground"}`}>
+              <h3 className="font-medium text-xs text-foreground">
                 {achievement.title}
-                {achievement.highlighted && (
-                  <span className="ml-1.5 text-[8px] bg-primary text-primary-foreground px-1 py-0.5 rounded uppercase">
-                    Featured
-                  </span>
-                )}
               </h3>
               <p className="text-[10px] text-muted-foreground">{achievement.description}</p>
             </div>

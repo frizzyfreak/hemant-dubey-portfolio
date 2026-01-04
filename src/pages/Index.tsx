@@ -9,6 +9,7 @@ import AchievementsCard from "@/components/portfolio/AchievementsCard";
 import ProjectsSection from "@/components/portfolio/ProjectsSection";
 import TechnicalSkillsCard from "@/components/portfolio/TechnicalSkillsCard";
 import GitHubContributions from "@/components/portfolio/GitHubContributions";
+import HoveringJet from "@/components/portfolio/HoveringJet";
 import Footer from "@/components/portfolio/Footer";
 
 const Index = () => {
@@ -44,8 +45,9 @@ const Index = () => {
           <TechnicalSkillsCard />
 
           {/* GitHub Contributions - Full 2 Column Width */}
-          <div className="lg:col-span-2">
+          <div className="lg:col-span-2 space-y-2 sm:space-y-3">
             <GitHubContributions />
+            <HoveringJet />
           </div>
 
           {/* Footer - Full Width */}

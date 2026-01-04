@@ -1,29 +1,50 @@
 import { Briefcase } from "lucide-react";
 
-const experiences = [
+interface ExperienceItem {
+  title: string;
+  company: string;
+  period: string;
+  points: string[];
+}
+
+const experiences: ExperienceItem[] = [
   {
     title: "Product Manager Intern",
     company: "AdvantageClub.ai",
     period: "Jan 2026 - June 2026",
-    description: "Leading product initiatives and driving AI-powered solutions.",
+    points: [
+      "Spearheaded end-to-end product implementation for 10+ enterprise clients, streamlining Rewards & Recognition (RNR) system.",
+      "Defined business logic, configured platform workflows, integrated user data via APIs, and conducted rigorous UAT before deployment.",
+    ],
   },
   {
     title: "Software Management Engineer",
     company: "TechEagles",
     period: "Sept 2025 - Present",
-    description: "Founding team member providing SaaS solutions.",
+    points: [
+      "Founding team member providing SaaS solutions to freelancing community.",
+      "Secured role based on outstanding internship performance at DRDO.",
+    ],
   },
   {
     title: "ML Project Trainee",
     company: "Solid State Physics Laboratory, DRDO",
     period: "June 2025 - July 2025",
-    description: "Engineered automated data pipelines saving psychologists 2-3 hours/week. Developed 'MindFit' screening tools for mental health assessment. Built predictive models using Python and scikit-learn for personnel evaluation. Collaborated with defense scientists to optimize data collection workflows.",
+    points: [
+      "Engineered automated data pipeline using Google Apps Script to collect and augment 200+ psychological test responses, saving Psychologists 2-3 hours/week.",
+      "Developed 'MindFit' Questionnaire leveraging PHQ-9 dataset to generate model-driven insights and interactive dashboard visualizations.",
+      "Delivered project in fast-paced R&D setting; recognized as top 1% contributor on GitHub.",
+    ],
   },
   {
     title: "Executive Board Member",
-    company: "Fine Arts Society",
+    company: "Fine Arts & Photography Society",
     period: "Oct 2023 - May 2025",
-    description: "Directed visual vision for KaleidoScope (5000+ attendees). Led a team of 15+ designers for promotional campaigns and event branding. Managed cross-functional coordination between cultural clubs and administration. Spearheaded digital marketing initiatives increasing event engagement by 40%.",
+    points: [
+      "Directed the creative vision for flagship Art & Music Festival KaleidoScope with 5,000+ attendees.",
+      "Managed Core team on ideation, execution, and Art Exhibits in just about a month-long phase.",
+      "Concluded tenure as Head of Sketching, leading a team of 30+ artists in the past year.",
+    ],
   },
 ];
 
@@ -53,7 +74,11 @@ const ExperienceCard = () => {
                   </span>
                 </div>
                 <p className="text-[10px] font-medium text-muted-foreground">{exp.company}</p>
-                <p className="text-[10px] text-muted-foreground leading-relaxed">{exp.description}</p>
+                <ul className="text-[10px] text-muted-foreground leading-relaxed list-disc list-inside space-y-0.5 mt-1">
+                  {exp.points.map((point, idx) => (
+                    <li key={idx}>{point}</li>
+                  ))}
+                </ul>
               </div>
             </div>
           ))}

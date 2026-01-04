@@ -1,40 +1,98 @@
+import { useState, useRef, useEffect } from "react";
+
 const HoveringJet = () => {
+  const [jetY, setJetY] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const targetY = useRef(0);
+  const currentY = useRef(0);
+
+  useEffect(() => {
+    let animationId: number;
+    
+    const animate = () => {
+      // Smooth interpolation towards target
+      currentY.current += (targetY.current - currentY.current) * 0.08;
+      setJetY(currentY.current);
+      animationId = requestAnimationFrame(animate);
+    };
+    
+    animationId = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(animationId);
+  }, []);
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!containerRef.current) return;
+    
+    const rect = containerRef.current.getBoundingClientRect();
+    const mouseY = e.clientY - rect.top;
+    const containerHeight = rect.height;
+    const jetCenter = containerHeight / 2;
+    
+    // If mouse is below center, jet flies up; if above, jet flies down
+    if (mouseY > jetCenter) {
+      targetY.current = -30; // Fly up
+    } else {
+      targetY.current = 30; // Fly down
+    }
+  };
+
+  const handleMouseLeave = () => {
+    targetY.current = 0; // Return to center
+  };
+
   return (
-    <div className="animate-fade-up flex items-center justify-center py-6" style={{ animationDelay: "750ms" }}>
+    <div 
+      ref={containerRef}
+      className="animate-fade-up flex items-center justify-center py-6 cursor-pointer" 
+      style={{ animationDelay: "750ms" }}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+    >
       <div className="relative w-full h-32 overflow-visible">
-        {/* Jet with hovering animation */}
+        {/* F-22 Raptor style jet with reactive animation */}
         <div 
-          className="absolute animate-jet-fly"
+          className="absolute transition-none"
           style={{
             left: '20%',
+            transform: `translateY(${jetY}px)`,
           }}
         >
           <svg 
-            viewBox="0 0 200 60" 
+            viewBox="0 0 200 80" 
             className="w-64 h-24 text-foreground fill-current"
           >
-            {/* F/A-18 Hornet style fighter jet silhouette */}
+            {/* F-22 Raptor silhouette - top-left style from reference */}
             {/* Main fuselage */}
-            <path d="M190 30 L170 25 L165 18 L155 15 L145 18 L140 22 L50 22 L45 12 L35 10 L30 12 L25 18 L10 25 L5 30 L10 35 L25 42 L30 48 L35 50 L45 48 L50 38 L140 38 L145 42 L155 45 L165 42 L170 35 L190 30 Z" />
-            {/* Cockpit */}
-            <ellipse cx="165" cy="30" rx="12" ry="6" className="fill-muted" />
-            {/* Main wings */}
-            <path d="M85 22 L60 5 L50 5 L75 22 Z" />
-            <path d="M85 38 L60 55 L50 55 L75 38 Z" />
-            {/* Tail fins */}
-            <path d="M30 18 L20 5 L15 5 L25 18 Z" />
-            <path d="M30 42 L20 55 L15 55 L25 42 Z" />
-            {/* Vertical stabilizers */}
-            <path d="M40 22 L35 8 L32 8 L38 22 Z" />
-            <path d="M40 38 L35 52 L32 52 L38 38 Z" />
+            <path d="M195 40 L180 38 L175 35 L160 32 L140 30 L120 28 L80 26 L60 25 L40 24 L25 26 L15 30 L8 35 L5 40 L8 45 L15 50 L25 54 L40 56 L60 55 L80 54 L120 52 L140 50 L160 48 L175 45 L180 42 L195 40 Z" />
+            {/* Nose cone */}
+            <path d="M195 40 L185 38 L185 42 L195 40 Z" className="fill-muted/50" />
+            {/* Cockpit canopy */}
+            <ellipse cx="165" cy="40" rx="15" ry="5" className="fill-muted" />
+            <ellipse cx="165" cy="40" rx="12" ry="3" className="fill-muted/70" />
+            {/* Main delta wings */}
+            <path d="M100 26 L50 5 L35 3 L30 5 L55 26 Z" />
+            <path d="M100 54 L50 75 L35 77 L30 75 L55 54 Z" />
+            {/* Wing details */}
+            <path d="M80 26 L60 12 L55 12 L70 26 Z" className="fill-muted/30" />
+            <path d="M80 54 L60 68 L55 68 L70 54 Z" className="fill-muted/30" />
+            {/* Tail fins / Vertical stabilizers */}
+            <path d="M35 24 L25 8 L20 8 L18 10 L28 26 Z" />
+            <path d="M35 56 L25 72 L20 72 L18 70 L28 54 Z" />
+            {/* Horizontal stabilizers */}
+            <path d="M45 26 L35 18 L30 18 L38 26 Z" />
+            <path d="M45 54 L35 62 L30 62 L38 54 Z" />
             {/* Engine intakes */}
-            <ellipse cx="120" cy="25" rx="8" ry="3" className="fill-muted/50" />
-            <ellipse cx="120" cy="35" rx="8" ry="3" className="fill-muted/50" />
+            <ellipse cx="85" cy="34" rx="10" ry="3" className="fill-muted/40" />
+            <ellipse cx="85" cy="46" rx="10" ry="3" className="fill-muted/40" />
+            {/* Engine exhaust nozzles */}
+            <ellipse cx="18" cy="35" rx="4" ry="2" className="fill-muted/60" />
+            <ellipse cx="18" cy="45" rx="4" ry="2" className="fill-muted/60" />
           </svg>
           {/* Exhaust trail */}
           <div className="absolute right-full top-1/2 -translate-y-1/2 flex items-center">
-            <div className="w-16 h-2 bg-gradient-to-l from-orange-400 via-yellow-300 to-transparent rounded-full animate-pulse opacity-80" />
-            <div className="w-8 h-1 bg-gradient-to-l from-yellow-300 to-transparent rounded-full -ml-4 animate-pulse opacity-60" />
+            <div className="w-20 h-3 bg-gradient-to-l from-orange-500 via-orange-400 to-yellow-300 rounded-full animate-pulse opacity-90" />
+            <div className="w-12 h-2 bg-gradient-to-l from-yellow-300 via-yellow-200 to-transparent rounded-full -ml-6 animate-pulse opacity-70" />
+            <div className="w-6 h-1 bg-gradient-to-l from-yellow-200 to-transparent rounded-full -ml-3 animate-pulse opacity-50" />
           </div>
         </div>
         
@@ -45,21 +103,6 @@ const HoveringJet = () => {
       </div>
       
       <style>{`
-        @keyframes jet-fly {
-          0%, 100% {
-            transform: translateY(0px) rotate(-2deg);
-          }
-          25% {
-            transform: translateY(-12px) rotate(0deg);
-          }
-          50% {
-            transform: translateY(-6px) rotate(2deg);
-          }
-          75% {
-            transform: translateY(-16px) rotate(-1deg);
-          }
-        }
-        
         @keyframes cloud-drift {
           0%, 100% {
             transform: translateX(0);
@@ -69,10 +112,6 @@ const HoveringJet = () => {
             transform: translateX(-30px);
             opacity: 0.15;
           }
-        }
-        
-        .animate-jet-fly {
-          animation: jet-fly 3s ease-in-out infinite;
         }
         
         .animate-cloud-drift {

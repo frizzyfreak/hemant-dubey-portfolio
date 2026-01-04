@@ -31,12 +31,12 @@ const WhatIDoCard = () => {
     const containerWidth = container.offsetWidth;
     const containerHeight = container.offsetHeight;
 
-    // Initialize bubbles with random positions and velocities
+    // Initialize bubbles with random positions and velocities (reduced speed)
     const initialBubbles: Bubble[] = skills.map((_, index) => ({
       x: 20 + Math.random() * (containerWidth - 140),
       y: 10 + Math.random() * (containerHeight - 40),
-      vx: (Math.random() - 0.5) * 1.5,
-      vy: (Math.random() - 0.5) * 1.5,
+      vx: (Math.random() - 0.5) * 0.75,
+      vy: (Math.random() - 0.5) * 0.75,
       width: 100,
       height: 28,
     }));

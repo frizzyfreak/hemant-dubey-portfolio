@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import CatSilhouette from "./CatSilhouette";
 
 interface Project {
   title: string;
@@ -33,7 +34,8 @@ const projects: Project[] = [
 
 const ProjectsSection = () => {
   return (
-    <div className="bento-card animate-fade-up" style={{ animationDelay: "800ms" }}>
+    <div className="bento-card animate-fade-up relative" style={{ animationDelay: "800ms" }}>
+      <CatSilhouette position="top-right" />
       <div className="flex items-center gap-2 mb-2">
         <div className="w-1.5 h-1.5 rounded-full bg-pastel-mint" />
         <h2 className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Projects</h2>

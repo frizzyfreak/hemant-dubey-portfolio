@@ -14,7 +14,7 @@ const WhatIDoCard = () => {
     <div className="bento-card animate-fade-up" style={{ animationDelay: "600ms" }}>
       <h2 className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-2">What I Do</h2>
       <div className="border-t border-border mb-3" />
-      <div className="relative h-36 overflow-hidden">
+      <div className="relative h-48 overflow-hidden">
         {skills.map((skill, index) => (
           <span
             key={skill.label}

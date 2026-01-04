@@ -15,7 +15,7 @@ const achievements = [
   },
   {
     icon: Award,
-    title: "IEEE Research Paper",
+    title: "IEEE Format Research Paper",
     description: "Co-authored paper on Credit Card Fraud Detection",
     highlighted: false,
   },

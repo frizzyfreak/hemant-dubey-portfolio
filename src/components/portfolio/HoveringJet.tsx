@@ -1,40 +1,47 @@
 const HoveringJet = () => {
   return (
-    <div className="bento-card animate-fade-up flex items-center justify-center py-4" style={{ animationDelay: "750ms" }}>
-      <div className="relative w-full h-16 overflow-hidden">
+    <div className="animate-fade-up flex items-center justify-center py-6" style={{ animationDelay: "750ms" }}>
+      <div className="relative w-full h-32 overflow-visible">
         {/* Jet with hovering animation */}
         <div 
           className="absolute animate-jet-fly"
           style={{
-            left: '10%',
+            left: '20%',
           }}
         >
           <svg 
-            viewBox="0 0 100 40" 
-            className="w-16 h-8 text-foreground fill-current"
+            viewBox="0 0 200 60" 
+            className="w-64 h-24 text-foreground fill-current"
           >
-            {/* Fighter jet silhouette */}
-            <path d="M95 20 L75 15 L70 10 L65 10 L60 15 L25 15 L20 5 L15 5 L15 15 L5 18 L5 22 L15 25 L15 35 L20 35 L25 25 L60 25 L65 30 L70 30 L75 25 L95 20 Z" />
+            {/* F/A-18 Hornet style fighter jet silhouette */}
+            {/* Main fuselage */}
+            <path d="M190 30 L170 25 L165 18 L155 15 L145 18 L140 22 L50 22 L45 12 L35 10 L30 12 L25 18 L10 25 L5 30 L10 35 L25 42 L30 48 L35 50 L45 48 L50 38 L140 38 L145 42 L155 45 L165 42 L170 35 L190 30 Z" />
             {/* Cockpit */}
-            <ellipse cx="78" cy="20" rx="5" ry="4" className="fill-muted" />
-            {/* Wings */}
-            <path d="M40 15 L30 5 L25 5 L35 15 Z" />
-            <path d="M40 25 L30 35 L25 35 L35 25 Z" />
+            <ellipse cx="165" cy="30" rx="12" ry="6" className="fill-muted" />
+            {/* Main wings */}
+            <path d="M85 22 L60 5 L50 5 L75 22 Z" />
+            <path d="M85 38 L60 55 L50 55 L75 38 Z" />
             {/* Tail fins */}
-            <path d="M15 15 L10 8 L8 8 L12 15 Z" />
-            <path d="M15 25 L10 32 L8 32 L12 25 Z" />
+            <path d="M30 18 L20 5 L15 5 L25 18 Z" />
+            <path d="M30 42 L20 55 L15 55 L25 42 Z" />
+            {/* Vertical stabilizers */}
+            <path d="M40 22 L35 8 L32 8 L38 22 Z" />
+            <path d="M40 38 L35 52 L32 52 L38 38 Z" />
+            {/* Engine intakes */}
+            <ellipse cx="120" cy="25" rx="8" ry="3" className="fill-muted/50" />
+            <ellipse cx="120" cy="35" rx="8" ry="3" className="fill-muted/50" />
           </svg>
           {/* Exhaust trail */}
           <div className="absolute right-full top-1/2 -translate-y-1/2 flex items-center">
-            <div className="w-8 h-1 bg-gradient-to-l from-orange-400 via-yellow-300 to-transparent rounded-full animate-pulse opacity-80" />
-            <div className="w-4 h-0.5 bg-gradient-to-l from-yellow-300 to-transparent rounded-full -ml-2 animate-pulse opacity-60" />
+            <div className="w-16 h-2 bg-gradient-to-l from-orange-400 via-yellow-300 to-transparent rounded-full animate-pulse opacity-80" />
+            <div className="w-8 h-1 bg-gradient-to-l from-yellow-300 to-transparent rounded-full -ml-4 animate-pulse opacity-60" />
           </div>
         </div>
         
         {/* Background clouds for depth */}
-        <div className="absolute top-2 left-1/4 w-8 h-2 bg-muted/30 rounded-full animate-cloud-drift" />
-        <div className="absolute top-6 left-2/3 w-6 h-1.5 bg-muted/20 rounded-full animate-cloud-drift" style={{ animationDelay: '1s' }} />
-        <div className="absolute bottom-3 left-1/2 w-10 h-2 bg-muted/25 rounded-full animate-cloud-drift" style={{ animationDelay: '2s' }} />
+        <div className="absolute top-4 left-1/4 w-12 h-3 bg-muted/30 rounded-full animate-cloud-drift" />
+        <div className="absolute top-10 left-2/3 w-10 h-2 bg-muted/20 rounded-full animate-cloud-drift" style={{ animationDelay: '1s' }} />
+        <div className="absolute bottom-6 left-1/2 w-16 h-3 bg-muted/25 rounded-full animate-cloud-drift" style={{ animationDelay: '2s' }} />
       </div>
       
       <style>{`
@@ -43,13 +50,13 @@ const HoveringJet = () => {
             transform: translateY(0px) rotate(-2deg);
           }
           25% {
-            transform: translateY(-8px) rotate(0deg);
+            transform: translateY(-12px) rotate(0deg);
           }
           50% {
-            transform: translateY(-4px) rotate(2deg);
+            transform: translateY(-6px) rotate(2deg);
           }
           75% {
-            transform: translateY(-10px) rotate(-1deg);
+            transform: translateY(-16px) rotate(-1deg);
           }
         }
         
@@ -59,7 +66,7 @@ const HoveringJet = () => {
             opacity: 0.3;
           }
           50% {
-            transform: translateX(-20px);
+            transform: translateX(-30px);
             opacity: 0.15;
           }
         }

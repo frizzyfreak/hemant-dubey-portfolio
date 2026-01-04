@@ -56,7 +56,7 @@ const ExperienceCard = () => {
         <h2 className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Experience</h2>
       </div>
       <div className="border-t border-border mb-3" />
-      <div className="relative">
+      <div className="relative h-64 overflow-y-auto pr-2 scrollbar-thin">
         {/* Timeline line */}
         <div className="absolute left-[4px] top-1.5 bottom-1.5 w-[1.5px] bg-border" />
         
@@ -75,7 +75,7 @@ const ExperienceCard = () => {
                 </div>
                 <p className="text-[10px] font-medium text-muted-foreground">{exp.company}</p>
                 <ul className="text-[10px] text-muted-foreground leading-relaxed list-disc list-inside space-y-0.5 mt-1">
-                  {exp.points.map((point, idx) => (
+                  {exp.points.slice(0, 2).map((point, idx) => (
                     <li key={idx}>{point}</li>
                   ))}
                 </ul>

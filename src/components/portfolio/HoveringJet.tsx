@@ -2,9 +2,12 @@ import { useState, useRef, useEffect } from "react";
 
 const HoveringJet = () => {
   const [jetY, setJetY] = useState(0);
+  const [jetTilt, setJetTilt] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
   const targetY = useRef(0);
   const currentY = useRef(0);
+  const targetTilt = useRef(0);
+  const currentTilt = useRef(0);
 
   useEffect(() => {
     let animationId: number;
@@ -12,7 +15,9 @@ const HoveringJet = () => {
     const animate = () => {
       // Smooth interpolation towards target
       currentY.current += (targetY.current - currentY.current) * 0.08;
+      currentTilt.current += (targetTilt.current - currentTilt.current) * 0.1;
       setJetY(currentY.current);
+      setJetTilt(currentTilt.current);
       animationId = requestAnimationFrame(animate);
     };
     
@@ -31,14 +36,20 @@ const HoveringJet = () => {
     // If mouse is below center, jet flies up; if above, jet flies down
     if (mouseY > jetCenter) {
       targetY.current = -30; // Fly up
+      targetTilt.current = -8; // Tilt nose up
     } else {
       targetY.current = 30; // Fly down
+      targetTilt.current = 8; // Tilt nose down
     }
   };
 
   const handleMouseLeave = () => {
     targetY.current = 0; // Return to center
+    targetTilt.current = 0; // Level out
   };
+
+  // Calculate speed line opacity based on movement
+  const speedLineIntensity = Math.abs(jetY) / 30;
 
   return (
     <div 
@@ -48,15 +59,26 @@ const HoveringJet = () => {
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
     >
-      <div className="relative w-full h-32 overflow-visible">
-        {/* F-22 Raptor style jet with reactive animation */}
+      <div className="relative w-full h-32 overflow-visible flex items-center justify-center">
+        {/* F-22 Raptor style jet with reactive animation - centered */}
         <div 
-          className="absolute transition-none"
+          className="relative transition-none"
           style={{
-            left: '20%',
-            transform: `translateY(${jetY}px)`,
+            transform: `translateY(${jetY}px) rotate(${jetTilt}deg)`,
           }}
         >
+          {/* Speed lines / motion blur behind jet */}
+          <div 
+            className="absolute right-full top-1/2 -translate-y-1/2 flex flex-col gap-1 pr-2"
+            style={{ opacity: speedLineIntensity * 0.8 }}
+          >
+            <div className="w-32 h-[2px] bg-gradient-to-l from-muted-foreground/60 to-transparent rounded-full" />
+            <div className="w-24 h-[1.5px] bg-gradient-to-l from-muted-foreground/40 to-transparent rounded-full -ml-4" />
+            <div className="w-28 h-[2px] bg-gradient-to-l from-muted-foreground/50 to-transparent rounded-full -ml-2" />
+            <div className="w-20 h-[1.5px] bg-gradient-to-l from-muted-foreground/30 to-transparent rounded-full -ml-6" />
+            <div className="w-36 h-[2px] bg-gradient-to-l from-muted-foreground/40 to-transparent rounded-full" />
+          </div>
+          
           <svg 
             viewBox="0 0 200 80" 
             className="w-64 h-24 text-foreground fill-current"
@@ -88,8 +110,9 @@ const HoveringJet = () => {
             <ellipse cx="18" cy="35" rx="4" ry="2" className="fill-muted/60" />
             <ellipse cx="18" cy="45" rx="4" ry="2" className="fill-muted/60" />
           </svg>
+          
           {/* Exhaust trail */}
-          <div className="absolute right-full top-1/2 -translate-y-1/2 flex items-center">
+          <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-full flex items-center">
             <div className="w-20 h-3 bg-gradient-to-l from-orange-500 via-orange-400 to-yellow-300 rounded-full animate-pulse opacity-90" />
             <div className="w-12 h-2 bg-gradient-to-l from-yellow-300 via-yellow-200 to-transparent rounded-full -ml-6 animate-pulse opacity-70" />
             <div className="w-6 h-1 bg-gradient-to-l from-yellow-200 to-transparent rounded-full -ml-3 animate-pulse opacity-50" />

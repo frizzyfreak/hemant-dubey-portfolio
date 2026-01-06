@@ -33,12 +33,12 @@ const WhatIDoCard = () => {
 
     // Initialize bubbles with random positions and velocities (reduced speed)
     const initialBubbles: Bubble[] = skills.map((_, index) => ({
-      x: 20 + Math.random() * (containerWidth - 140),
-      y: 10 + Math.random() * (containerHeight - 40),
+      x: 20 + Math.random() * (containerWidth - 160),
+      y: 10 + Math.random() * (containerHeight - 50),
       vx: (Math.random() - 0.5) * 0.75,
       vy: (Math.random() - 0.5) * 0.75,
-      width: 100,
-      height: 28,
+      width: 130,
+      height: 36,
     }));
 
     setBubbles(initialBubbles);
@@ -97,7 +97,7 @@ const WhatIDoCard = () => {
           <span
             key={skill.label}
             className={cn(
-              "skill-tag absolute shadow-sm text-[10px] whitespace-nowrap",
+              "absolute shadow-sm text-xs font-medium whitespace-nowrap px-4 py-2 rounded-md",
               skill.color
             )}
             style={{

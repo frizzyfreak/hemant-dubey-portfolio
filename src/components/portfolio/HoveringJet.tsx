@@ -195,19 +195,74 @@ const HoveringJet = () => {
         {/* Fast-moving clouds to simulate flight */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           {/* Layer 1 - Fastest, closest clouds */}
-          <div className="absolute top-3 w-16 h-4 bg-sky-300/50 rounded-full animate-cloud-fast" style={{ right: '-80px' }} />
-          <div className="absolute top-8 w-12 h-3 bg-sky-200/45 rounded-full animate-cloud-fast" style={{ right: '-60px', animationDelay: '0.3s' }} />
-          <div className="absolute bottom-4 w-20 h-4 bg-sky-300/50 rounded-full animate-cloud-fast" style={{ right: '-100px', animationDelay: '0.6s' }} />
-          <div className="absolute top-1/2 w-14 h-3 bg-sky-200/40 rounded-full animate-cloud-fast" style={{ right: '-70px', animationDelay: '0.9s' }} />
+          <div className="absolute top-2 animate-cloud-fast" style={{ right: '-80px' }}>
+            <div className="relative">
+              <div className="absolute w-6 h-4 bg-sky-300/50 rounded-full" />
+              <div className="absolute w-5 h-4 bg-sky-300/50 rounded-full left-4 top-1" />
+              <div className="absolute w-7 h-5 bg-sky-300/50 rounded-full left-2 -top-1" />
+              <div className="absolute w-4 h-3 bg-sky-300/50 rounded-full left-8 top-1" />
+            </div>
+          </div>
+          <div className="absolute top-10 animate-cloud-fast" style={{ right: '-60px', animationDelay: '0.3s' }}>
+            <div className="relative">
+              <div className="absolute w-5 h-3 bg-sky-200/45 rounded-full" />
+              <div className="absolute w-4 h-3 bg-sky-200/45 rounded-full left-3 -top-1" />
+              <div className="absolute w-5 h-4 bg-sky-200/45 rounded-full left-1 top-1" />
+            </div>
+          </div>
+          <div className="absolute bottom-3 animate-cloud-fast" style={{ right: '-100px', animationDelay: '0.6s' }}>
+            <div className="relative">
+              <div className="absolute w-8 h-5 bg-sky-300/50 rounded-full" />
+              <div className="absolute w-6 h-4 bg-sky-300/50 rounded-full left-5 -top-1" />
+              <div className="absolute w-7 h-5 bg-sky-300/50 rounded-full left-3 top-1" />
+              <div className="absolute w-5 h-4 bg-sky-300/50 rounded-full left-10 top-0" />
+            </div>
+          </div>
+          <div className="absolute top-1/2 animate-cloud-fast" style={{ right: '-70px', animationDelay: '0.9s' }}>
+            <div className="relative">
+              <div className="absolute w-5 h-4 bg-sky-200/40 rounded-full" />
+              <div className="absolute w-4 h-3 bg-sky-200/40 rounded-full left-3 -top-1" />
+              <div className="absolute w-5 h-4 bg-sky-200/40 rounded-full left-1 top-1" />
+            </div>
+          </div>
           
           {/* Layer 2 - Medium speed clouds */}
-          <div className="absolute top-6 w-10 h-2 bg-sky-200/35 rounded-full animate-cloud-medium" style={{ right: '-50px', animationDelay: '0.2s' }} />
-          <div className="absolute bottom-8 w-8 h-2 bg-sky-100/30 rounded-full animate-cloud-medium" style={{ right: '-40px', animationDelay: '0.5s' }} />
-          <div className="absolute top-1/3 w-12 h-3 bg-sky-200/35 rounded-full animate-cloud-medium" style={{ right: '-60px', animationDelay: '0.8s' }} />
+          <div className="absolute top-6 animate-cloud-medium" style={{ right: '-50px', animationDelay: '0.2s' }}>
+            <div className="relative">
+              <div className="absolute w-4 h-3 bg-sky-200/35 rounded-full" />
+              <div className="absolute w-3 h-2 bg-sky-200/35 rounded-full left-2 -top-1" />
+              <div className="absolute w-4 h-3 bg-sky-200/35 rounded-full left-1 top-0" />
+            </div>
+          </div>
+          <div className="absolute bottom-8 animate-cloud-medium" style={{ right: '-40px', animationDelay: '0.5s' }}>
+            <div className="relative">
+              <div className="absolute w-3 h-2 bg-sky-100/30 rounded-full" />
+              <div className="absolute w-4 h-3 bg-sky-100/30 rounded-full left-2 -top-1" />
+              <div className="absolute w-3 h-2 bg-sky-100/30 rounded-full left-4 top-0" />
+            </div>
+          </div>
+          <div className="absolute top-1/3 animate-cloud-medium" style={{ right: '-60px', animationDelay: '0.8s' }}>
+            <div className="relative">
+              <div className="absolute w-5 h-3 bg-sky-200/35 rounded-full" />
+              <div className="absolute w-4 h-3 bg-sky-200/35 rounded-full left-3 -top-1" />
+              <div className="absolute w-5 h-4 bg-sky-200/35 rounded-full left-1 top-0" />
+            </div>
+          </div>
           
           {/* Layer 3 - Slower, distant clouds */}
-          <div className="absolute top-2 w-6 h-1.5 bg-sky-100/25 rounded-full animate-cloud-slow" style={{ right: '-30px', animationDelay: '0.4s' }} />
-          <div className="absolute bottom-3 w-8 h-1.5 bg-sky-100/25 rounded-full animate-cloud-slow" style={{ right: '-40px', animationDelay: '0.7s' }} />
+          <div className="absolute top-1 animate-cloud-slow" style={{ right: '-30px', animationDelay: '0.4s' }}>
+            <div className="relative">
+              <div className="absolute w-3 h-2 bg-sky-100/25 rounded-full" />
+              <div className="absolute w-2 h-2 bg-sky-100/25 rounded-full left-2 -top-0.5" />
+            </div>
+          </div>
+          <div className="absolute bottom-2 animate-cloud-slow" style={{ right: '-40px', animationDelay: '0.7s' }}>
+            <div className="relative">
+              <div className="absolute w-3 h-2 bg-sky-100/25 rounded-full" />
+              <div className="absolute w-3 h-2 bg-sky-100/25 rounded-full left-2 -top-0.5" />
+              <div className="absolute w-2 h-2 bg-sky-100/25 rounded-full left-4 top-0" />
+            </div>
+          </div>
         </div>
       </div>
       

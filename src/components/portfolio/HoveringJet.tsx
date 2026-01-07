@@ -3,74 +3,134 @@ import { useState, useRef, useEffect } from "react";
 const HoveringJet = () => {
   const [jetY, setJetY] = useState(0);
   const [jetTilt, setJetTilt] = useState(0);
+  const [isLaunching, setIsLaunching] = useState(false);
+  const [launchPhase, setLaunchPhase] = useState<'idle' | 'charging' | 'launching' | 'gone'>('idle');
   const containerRef = useRef<HTMLDivElement>(null);
   const targetY = useRef(0);
   const currentY = useRef(0);
   const targetTilt = useRef(0);
   const currentTilt = useRef(0);
+  const launchX = useRef(0);
+  const launchY = useRef(0);
 
   useEffect(() => {
     let animationId: number;
     
     const animate = () => {
-      // Smooth interpolation towards target
-      currentY.current += (targetY.current - currentY.current) * 0.08;
-      currentTilt.current += (targetTilt.current - currentTilt.current) * 0.1;
-      setJetY(currentY.current);
-      setJetTilt(currentTilt.current);
+      if (launchPhase === 'idle' || launchPhase === 'charging') {
+        // Normal hover animation
+        currentY.current += (targetY.current - currentY.current) * 0.08;
+        currentTilt.current += (targetTilt.current - currentTilt.current) * 0.1;
+        setJetY(currentY.current);
+        setJetTilt(currentTilt.current);
+      } else if (launchPhase === 'launching') {
+        // Launch animation - accelerate to the right and slightly up
+        launchX.current += launchX.current * 0.08 + 8;
+        launchY.current -= 2;
+        currentTilt.current += (15 - currentTilt.current) * 0.15; // Nose up during launch
+        setJetTilt(currentTilt.current);
+        
+        // Check if jet is off screen
+        if (launchX.current > window.innerWidth + 500) {
+          setLaunchPhase('gone');
+        }
+      }
+      
       animationId = requestAnimationFrame(animate);
     };
     
     animationId = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(animationId);
-  }, []);
+  }, [launchPhase]);
 
   const handleMouseMove = (e: React.MouseEvent) => {
-    if (!containerRef.current) return;
+    if (!containerRef.current || launchPhase !== 'idle') return;
     
     const rect = containerRef.current.getBoundingClientRect();
     const mouseY = e.clientY - rect.top;
     const containerHeight = rect.height;
     const jetCenter = containerHeight / 2;
     
-    // If mouse is below center, jet flies up; if above, jet flies down
     if (mouseY > jetCenter) {
-      targetY.current = -30; // Fly up
-      targetTilt.current = -8; // Tilt nose up
+      targetY.current = -30;
+      targetTilt.current = -8;
     } else {
-      targetY.current = 30; // Fly down
-      targetTilt.current = 8; // Tilt nose down
+      targetY.current = 30;
+      targetTilt.current = 8;
     }
   };
 
   const handleMouseLeave = () => {
-    targetY.current = 0; // Return to center
-    targetTilt.current = 0; // Level out
+    if (launchPhase !== 'idle') return;
+    targetY.current = 0;
+    targetTilt.current = 0;
   };
 
-  // Calculate speed line opacity based on movement
-  const speedLineIntensity = Math.abs(jetY) / 30;
+  const handleClick = () => {
+    if (launchPhase !== 'idle') return;
+    
+    // Start charging phase
+    setLaunchPhase('charging');
+    setIsLaunching(true);
+    
+    // After a brief charge-up, launch!
+    setTimeout(() => {
+      setLaunchPhase('launching');
+      launchX.current = 0;
+      launchY.current = jetY;
+    }, 400);
+  };
+
+  // Calculate speed line opacity based on movement or launch
+  const speedLineIntensity = launchPhase === 'launching' ? 1 : 
+    launchPhase === 'charging' ? 0.6 : Math.abs(jetY) / 30;
+
+  // Calculate exhaust intensity
+  const exhaustScale = launchPhase === 'launching' ? 2.5 : 
+    launchPhase === 'charging' ? 1.8 : 1;
+
+  if (launchPhase === 'gone') {
+    return (
+      <div 
+        className="animate-fade-up flex items-center justify-center py-6" 
+        style={{ animationDelay: "750ms" }}
+      >
+        <div className="relative w-full h-32 overflow-visible flex items-center justify-center">
+          <p className="text-muted-foreground text-sm italic animate-fade-in">
+            The jet has left the atmosphere... 🚀
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div 
       ref={containerRef}
-      className="animate-fade-up flex items-center justify-center py-6 cursor-pointer" 
+      className={`animate-fade-up flex items-center justify-center py-6 ${launchPhase === 'idle' ? 'cursor-pointer' : 'cursor-default'}`}
       style={{ animationDelay: "750ms" }}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
+      onClick={handleClick}
     >
       <div className="relative w-full h-32 overflow-visible flex items-center justify-center">
         {/* F-22 Raptor style jet with reactive animation - centered */}
         <div 
-          className="relative transition-none"
+          className={`relative ${launchPhase === 'charging' ? 'animate-pulse' : ''}`}
           style={{
-            transform: `translateY(${jetY}px) rotate(${jetTilt}deg)`,
+            transform: `translateX(${launchX.current}px) translateY(${launchPhase === 'launching' ? launchY.current : jetY}px) rotate(${jetTilt}deg)`,
+            transition: launchPhase === 'charging' ? 'transform 0.1s ease-out' : 'none',
           }}
         >
           {/* Speed lines / motion blur behind jet */}
           <div 
             className="absolute right-full top-1/2 -translate-y-1/2 flex flex-col gap-1 pr-2"
-            style={{ opacity: speedLineIntensity * 0.8 }}
+            style={{ 
+              opacity: speedLineIntensity * 0.8,
+              transform: `scaleX(${launchPhase === 'launching' ? 3 : 1})`,
+              transformOrigin: 'right center',
+              transition: 'transform 0.3s ease-out'
+            }}
           >
             <div className="w-32 h-[2px] bg-gradient-to-l from-muted-foreground/60 to-transparent rounded-full" />
             <div className="w-24 h-[1.5px] bg-gradient-to-l from-muted-foreground/40 to-transparent rounded-full -ml-4" />
@@ -83,40 +143,53 @@ const HoveringJet = () => {
             viewBox="0 0 200 80" 
             className="w-64 h-24 text-foreground fill-current"
           >
-            {/* F-22 Raptor silhouette - top-left style from reference */}
-            {/* Main fuselage */}
+            {/* F-22 Raptor silhouette */}
             <path d="M195 40 L180 38 L175 35 L160 32 L140 30 L120 28 L80 26 L60 25 L40 24 L25 26 L15 30 L8 35 L5 40 L8 45 L15 50 L25 54 L40 56 L60 55 L80 54 L120 52 L140 50 L160 48 L175 45 L180 42 L195 40 Z" />
-            {/* Nose cone */}
             <path d="M195 40 L185 38 L185 42 L195 40 Z" className="fill-muted/50" />
-            {/* Cockpit canopy */}
             <ellipse cx="165" cy="40" rx="15" ry="5" className="fill-muted" />
             <ellipse cx="165" cy="40" rx="12" ry="3" className="fill-muted/70" />
-            {/* Main delta wings */}
             <path d="M100 26 L50 5 L35 3 L30 5 L55 26 Z" />
             <path d="M100 54 L50 75 L35 77 L30 75 L55 54 Z" />
-            {/* Wing details */}
             <path d="M80 26 L60 12 L55 12 L70 26 Z" className="fill-muted/30" />
             <path d="M80 54 L60 68 L55 68 L70 54 Z" className="fill-muted/30" />
-            {/* Tail fins / Vertical stabilizers */}
             <path d="M35 24 L25 8 L20 8 L18 10 L28 26 Z" />
             <path d="M35 56 L25 72 L20 72 L18 70 L28 54 Z" />
-            {/* Horizontal stabilizers */}
             <path d="M45 26 L35 18 L30 18 L38 26 Z" />
             <path d="M45 54 L35 62 L30 62 L38 54 Z" />
-            {/* Engine intakes */}
             <ellipse cx="85" cy="34" rx="10" ry="3" className="fill-muted/40" />
             <ellipse cx="85" cy="46" rx="10" ry="3" className="fill-muted/40" />
-            {/* Engine exhaust nozzles */}
             <ellipse cx="18" cy="35" rx="4" ry="2" className="fill-muted/60" />
             <ellipse cx="18" cy="45" rx="4" ry="2" className="fill-muted/60" />
           </svg>
           
-          {/* Exhaust trail */}
-          <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-full flex items-center">
-            <div className="w-20 h-3 bg-gradient-to-l from-orange-500 via-orange-400 to-yellow-300 rounded-full animate-pulse opacity-90" />
-            <div className="w-12 h-2 bg-gradient-to-l from-yellow-300 via-yellow-200 to-transparent rounded-full -ml-6 animate-pulse opacity-70" />
-            <div className="w-6 h-1 bg-gradient-to-l from-yellow-200 to-transparent rounded-full -ml-3 animate-pulse opacity-50" />
+          {/* Exhaust trail - scales up during launch */}
+          <div 
+            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-full flex items-center"
+            style={{
+              transform: `translateX(-100%) translateY(-50%) scaleX(${exhaustScale})`,
+              transformOrigin: 'right center',
+              transition: 'transform 0.2s ease-out'
+            }}
+          >
+            <div className={`w-20 h-3 bg-gradient-to-l from-orange-500 via-orange-400 to-yellow-300 rounded-full animate-pulse ${launchPhase === 'launching' ? 'opacity-100' : 'opacity-90'}`} />
+            <div className={`w-12 h-2 bg-gradient-to-l from-yellow-300 via-yellow-200 to-transparent rounded-full -ml-6 animate-pulse ${launchPhase === 'launching' ? 'opacity-90' : 'opacity-70'}`} />
+            <div className={`w-6 h-1 bg-gradient-to-l from-yellow-200 to-transparent rounded-full -ml-3 animate-pulse ${launchPhase === 'launching' ? 'opacity-70' : 'opacity-50'}`} />
+            {/* Extra flame during launch */}
+            {(launchPhase === 'charging' || launchPhase === 'launching') && (
+              <>
+                <div className="absolute w-16 h-4 bg-gradient-to-l from-blue-400 via-blue-300 to-transparent rounded-full -ml-14 animate-pulse opacity-60" />
+                <div className="absolute w-24 h-2 bg-gradient-to-l from-white via-blue-200 to-transparent rounded-full -ml-20 animate-pulse opacity-40" />
+              </>
+            )}
           </div>
+          
+          {/* Sonic boom effect during launch */}
+          {launchPhase === 'launching' && (
+            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
+              <div className="w-32 h-32 border-2 border-muted-foreground/30 rounded-full animate-ping" />
+              <div className="absolute top-0 left-0 w-32 h-32 border border-muted-foreground/20 rounded-full animate-ping" style={{ animationDelay: '0.1s' }} />
+            </div>
+          )}
         </div>
         
         {/* Background clouds for depth */}

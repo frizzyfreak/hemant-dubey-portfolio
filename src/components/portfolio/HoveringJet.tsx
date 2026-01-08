@@ -1,22 +1,10 @@
-import { useState, useRef, useEffect, useCallback } from "react";
-import { RotateCcw } from "lucide-react";
-
-interface Bird {
-  id: number;
-  x: number;
-  y: number;
-  speed: number;
-  bursting: boolean;
-}
+import { useState, useRef, useEffect } from "react";
 
 const HoveringJet = () => {
   const [jetY, setJetY] = useState(0);
   const [jetTilt, setJetTilt] = useState(0);
   const [isLaunching, setIsLaunching] = useState(false);
   const [launchPhase, setLaunchPhase] = useState<'idle' | 'charging' | 'launching' | 'gone'>('idle');
-  const [birds, setBirds] = useState<Bird[]>([]);
-  const [score, setScore] = useState(0);
-  const [gameActive, setGameActive] = useState(true);
   const containerRef = useRef<HTMLDivElement>(null);
   const targetY = useRef(0);
   const currentY = useRef(0);
@@ -24,75 +12,6 @@ const HoveringJet = () => {
   const currentTilt = useRef(0);
   const launchX = useRef(0);
   const launchY = useRef(0);
-  const jetPosition = useRef({ x: 0, y: 0 });
-  const birdIdCounter = useRef(0);
-
-  // Jet nose tip position (relative to jet center)
-  const JET_NOSE_OFFSET_X = 128; // Half of jet width (256/2)
-  const JET_NOSE_OFFSET_Y = 0;
-
-  // Bird spawning
-  useEffect(() => {
-    if (launchPhase !== 'idle' || !gameActive) return;
-
-    const spawnBird = () => {
-      if (!containerRef.current) return;
-      const rect = containerRef.current.getBoundingClientRect();
-      const newBird: Bird = {
-        id: birdIdCounter.current++,
-        x: rect.width + 50,
-        y: Math.random() * (rect.height - 20) + 10,
-        speed: 2 + Math.random() * 2,
-        bursting: false,
-      };
-      setBirds(prev => [...prev, newBird]);
-    };
-
-    const spawnInterval = setInterval(spawnBird, 1500);
-    return () => clearInterval(spawnInterval);
-  }, [launchPhase, gameActive]);
-
-  // Bird movement and collision detection
-  useEffect(() => {
-    if (launchPhase !== 'idle' || !gameActive) return;
-
-    const moveInterval = setInterval(() => {
-      setBirds(prev => {
-        const updated = prev.map(bird => {
-          if (bird.bursting) return bird;
-          
-          // Check collision with jet nose
-          const jetNoseX = jetPosition.current.x + JET_NOSE_OFFSET_X;
-          const jetNoseY = jetPosition.current.y + JET_NOSE_OFFSET_Y + currentY.current;
-          
-          const distance = Math.sqrt(
-            Math.pow(bird.x - jetNoseX, 2) + 
-            Math.pow(bird.y - jetNoseY, 2)
-          );
-
-          if (distance < 25) {
-            setScore(s => s + 1);
-            return { ...bird, bursting: true };
-          }
-
-          return { ...bird, x: bird.x - bird.speed };
-        });
-
-        // Remove birds that are off-screen or finished bursting
-        return updated.filter(bird => bird.x > -50 && (!bird.bursting || bird.x > -100));
-      });
-    }, 16);
-
-    return () => clearInterval(moveInterval);
-  }, [launchPhase, gameActive]);
-
-  // Remove bursting birds after animation
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      setBirds(prev => prev.filter(bird => !bird.bursting));
-    }, 300);
-    return () => clearTimeout(timeout);
-  }, [birds.filter(b => b.bursting).length]);
 
   useEffect(() => {
     let animationId: number;
@@ -114,7 +33,6 @@ const HoveringJet = () => {
         // Check if jet is off screen
         if (launchX.current > window.innerWidth + 500) {
           setLaunchPhase('gone');
-          setGameActive(false);
         }
       }
       
@@ -124,16 +42,6 @@ const HoveringJet = () => {
     animationId = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(animationId);
   }, [launchPhase]);
-
-  // Update jet position reference
-  useEffect(() => {
-    if (!containerRef.current) return;
-    const rect = containerRef.current.getBoundingClientRect();
-    jetPosition.current = {
-      x: rect.width / 2 - 128, // Center minus half jet width
-      y: rect.height / 2,
-    };
-  }, []);
 
   const handleMouseMove = (e: React.MouseEvent) => {
     if (!containerRef.current || launchPhase !== 'idle') return;
@@ -173,22 +81,6 @@ const HoveringJet = () => {
     }, 400);
   };
 
-  const handleReset = () => {
-    setLaunchPhase('idle');
-    setIsLaunching(false);
-    setGameActive(true);
-    setScore(0);
-    setBirds([]);
-    launchX.current = 0;
-    launchY.current = 0;
-    currentY.current = 0;
-    currentTilt.current = 0;
-    targetY.current = 0;
-    targetTilt.current = 0;
-    setJetY(0);
-    setJetTilt(0);
-  };
-
   // Calculate speed line opacity based on movement or launch
   const speedLineIntensity = launchPhase === 'launching' ? 1 : 
     launchPhase === 'charging' ? 0.6 : Math.abs(jetY) / 30;
@@ -200,20 +92,13 @@ const HoveringJet = () => {
   if (launchPhase === 'gone') {
     return (
       <div 
-        className="animate-fade-up flex flex-col items-center justify-center py-6" 
+        className="animate-fade-up flex items-center justify-center py-6" 
         style={{ animationDelay: "750ms" }}
       >
-        <div className="relative w-full h-32 overflow-visible flex flex-col items-center justify-center gap-3">
+        <div className="relative w-full h-32 overflow-visible flex items-center justify-center">
           <p className="text-muted-foreground text-sm italic animate-fade-in">
-            The jet has left the atmosphere... 🚀 Score: {score} birds!
+            The jet has left the atmosphere... 🚀
           </p>
-          <button
-            onClick={handleReset}
-            className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors text-sm font-medium"
-          >
-            <RotateCcw className="w-4 h-4" />
-            Reset Jet
-          </button>
         </div>
       </div>
     );
@@ -229,40 +114,9 @@ const HoveringJet = () => {
       onClick={handleClick}
     >
       <div className="relative w-full h-32 overflow-visible flex items-center justify-center">
-        {/* Score display */}
-        {gameActive && (
-          <div className="absolute top-0 right-0 text-xs font-medium text-muted-foreground bg-muted/50 px-2 py-1 rounded-md">
-            🐦 Score: {score}
-          </div>
-        )}
-
-        {/* Birds */}
-        {birds.map(bird => (
-          <div
-            key={bird.id}
-            className={`absolute transition-transform ${bird.bursting ? 'scale-150 opacity-0' : ''}`}
-            style={{
-              left: bird.x,
-              top: bird.y,
-              transition: bird.bursting ? 'all 0.3s ease-out' : 'none',
-            }}
-          >
-            {bird.bursting ? (
-              // Burst effect
-              <div className="relative">
-                <div className="absolute -inset-2 bg-yellow-400/60 rounded-full animate-ping" />
-                <div className="text-lg">💥</div>
-              </div>
-            ) : (
-              // Bird emoji flying left
-              <div className="text-lg transform -scale-x-100">🐦</div>
-            )}
-          </div>
-        ))}
-
         {/* F-22 Raptor style jet with reactive animation - centered */}
         <div 
-          className={`relative z-10 ${launchPhase === 'charging' ? 'animate-pulse' : ''}`}
+          className={`relative ${launchPhase === 'charging' ? 'animate-pulse' : ''}`}
           style={{
             transform: `translateX(${launchX.current}px) translateY(${launchPhase === 'launching' ? launchY.current : jetY}px) rotate(${jetTilt}deg)`,
             transition: launchPhase === 'charging' ? 'transform 0.1s ease-out' : 'none',

@@ -26,8 +26,7 @@ const HeaderCard = () => {
         <ThemeToggle />
         <Button 
           onClick={handleDownloadResume}
-          variant="outline"
-          className="rounded-full px-3 py-1.5 text-xs border-border hover:bg-primary hover:text-primary-foreground transition-all duration-200 hover:scale-105"
+          className="rounded-full px-3 py-1.5 text-xs bg-foreground text-background hover:bg-foreground/90 dark:bg-background dark:text-primary dark:border dark:border-primary hover:scale-105 transition-all duration-200"
         >
           <Download className="w-3 h-3 mr-1.5" />
           Resume

@@ -97,7 +97,7 @@ const HoveringJet = () => {
       >
         <div className="relative w-full h-32 overflow-visible flex items-center justify-center">
           <p className="text-muted-foreground text-sm italic animate-fade-in">
-            The jet has left the atmosphere... 🚀
+            You discovered the Easter EGG!! 🥚✨
           </p>
         </div>
       </div>

@@ -55,25 +55,36 @@ const WhatIDoCard = () => {
           x += vx;
           y += vy;
 
-          // Apply friction to slow down over time
-          vx *= 0.995;
-          vy *= 0.995;
+          // Apply friction only when moving fast (after click dispersion)
+          const speed = Math.sqrt(vx * vx + vy * vy);
+          const minSpeed = 0.3;
+          
+          if (speed > minSpeed * 2) {
+            // Apply friction to slow down from high speeds
+            vx *= 0.98;
+            vy *= 0.98;
+          } else if (speed < minSpeed) {
+            // Ensure minimum velocity - normalize and scale to min speed
+            const angle = Math.atan2(vy, vx);
+            vx = Math.cos(angle) * minSpeed;
+            vy = Math.sin(angle) * minSpeed;
+          }
 
           // Bounce off walls (Newton's third law - reverse velocity)
           if (x <= 0) {
             x = 0;
-            vx = Math.abs(vx);
+            vx = Math.abs(vx) || minSpeed;
           } else if (x + width >= containerWidth) {
             x = containerWidth - width;
-            vx = -Math.abs(vx);
+            vx = -(Math.abs(vx) || minSpeed);
           }
 
           if (y <= 0) {
             y = 0;
-            vy = Math.abs(vy);
+            vy = Math.abs(vy) || minSpeed;
           } else if (y + height >= containerHeight) {
             y = containerHeight - height;
-            vy = -Math.abs(vy);
+            vy = -(Math.abs(vy) || minSpeed);
           }
 
           return { x, y, vx, vy, width, height };

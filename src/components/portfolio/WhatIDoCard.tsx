@@ -55,6 +55,10 @@ const WhatIDoCard = () => {
           x += vx;
           y += vy;
 
+          // Apply friction to slow down over time
+          vx *= 0.995;
+          vy *= 0.995;
+
           // Bounce off walls (Newton's third law - reverse velocity)
           if (x <= 0) {
             x = 0;
@@ -88,11 +92,43 @@ const WhatIDoCard = () => {
     };
   }, []);
 
+  const handleContainerClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!containerRef.current) return;
+
+    const rect = containerRef.current.getBoundingClientRect();
+    const clickX = e.clientX - rect.left;
+    const clickY = e.clientY - rect.top;
+
+    setBubbles((prevBubbles) =>
+      prevBubbles.map((bubble) => {
+        // Calculate center of bubble
+        const bubbleCenterX = bubble.x + bubble.width / 2;
+        const bubbleCenterY = bubble.y + bubble.height / 2;
+
+        // Calculate direction from click to bubble
+        const dx = bubbleCenterX - clickX;
+        const dy = bubbleCenterY - clickY;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+
+        // Normalize and apply force (closer bubbles get pushed harder)
+        const force = Math.max(8, 150 / (distance + 1));
+        const normalizedDx = dx / (distance || 1);
+        const normalizedDy = dy / (distance || 1);
+
+        return {
+          ...bubble,
+          vx: bubble.vx + normalizedDx * force,
+          vy: bubble.vy + normalizedDy * force,
+        };
+      })
+    );
+  };
+
   return (
     <div className="bento-card animate-fade-up" style={{ animationDelay: "600ms" }}>
       <h2 className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-2">What I Do</h2>
       <div className="border-t border-border mb-3" />
-      <div ref={containerRef} className="relative h-64 overflow-hidden">
+      <div ref={containerRef} className="relative h-64 overflow-hidden cursor-pointer" onClick={handleContainerClick}>
         {skills.map((skill, index) => (
           <span
             key={skill.label}

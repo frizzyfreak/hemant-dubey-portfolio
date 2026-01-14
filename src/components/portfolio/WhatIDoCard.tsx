@@ -51,13 +51,17 @@ const WhatIDoCard = () => {
         return prevBubbles.map((bubble) => {
           let { x, y, vx, vy, width, height } = bubble;
 
+          // Normalize velocity to maintain constant speed of 0.8
+          const currentSpeed = Math.sqrt(vx * vx + vy * vy);
+          const targetSpeed = 0.8;
+          if (currentSpeed > 0) {
+            vx = (vx / currentSpeed) * targetSpeed;
+            vy = (vy / currentSpeed) * targetSpeed;
+          }
+
           // Update position
           x += vx;
           y += vy;
-
-          // Apply friction to slow down over time
-          vx *= 0.995;
-          vy *= 0.995;
 
           // Bounce off walls (Newton's third law - reverse velocity)
           if (x <= 0) {

@@ -2,6 +2,7 @@ import { Mail, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ThemeToggle from "@/components/ThemeToggle";
 import TypingAnimation from "./TypingAnimation";
+import MagnifyText from "./MagnifyText";
 
 const HeaderCard = () => {
   const handleDownloadResume = () => {
@@ -16,7 +17,7 @@ const HeaderCard = () => {
     <div className="bento-card col-span-full flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3" style={{ animationDelay: "0ms" }}>
       <div className="space-y-0.5">
         <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
-          Hemant Dubey
+          <MagnifyText text="Hemant Dubey" />
         </h1>
         <p className="text-muted-foreground text-xs uppercase tracking-wider">
           <TypingAnimation text="Product Management. Designing. GenAI Enthusiast." />

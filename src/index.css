@@ -128,39 +128,33 @@
 
 @layer utilities {
   .bento-card {
-    @apply bg-card rounded-2xl border border-border p-4 transition-all duration-500 ease-out cursor-pointer;
+    @apply bg-card rounded-2xl border border-border p-4 transition-all duration-300 ease-out;
     box-shadow: var(--shadow-card);
   }
 
   .bento-card:hover {
+    box-shadow: var(--shadow-card-hover);
+    transform: translateY(-2px);
+  }
+
+  /* Clock card keeps the dark hover effect */
+  .bento-card-hover {
+    @apply bg-card rounded-2xl border border-border p-4 transition-all duration-500 ease-out cursor-pointer;
+    box-shadow: var(--shadow-card);
+  }
+
+  .bento-card-hover:hover {
     @apply bg-primary border-primary;
     box-shadow: var(--shadow-card-hover);
     transform: translateY(-4px) scale(1.01);
   }
 
-  .bento-card:hover * {
+  .bento-card-hover:hover * {
     @apply text-primary-foreground;
   }
 
-  .bento-card:hover .text-muted-foreground {
+  .bento-card-hover:hover .text-muted-foreground {
     @apply text-primary-foreground/80;
-  }
-
-  .bento-card:hover .experience-period {
-    @apply text-foreground bg-primary-foreground;
-  }
-
-  .bento-card:hover .skill-tag {
-    @apply bg-primary-foreground/20 text-primary-foreground;
-  }
-
-  .bento-card:hover .bg-pastel-lavender,
-  .bento-card:hover .bg-pastel-orange,
-  .bento-card:hover .bg-pastel-blue,
-  .bento-card:hover .bg-pastel-mint,
-  .bento-card:hover .bg-pastel-pink,
-  .bento-card:hover .bg-pastel-yellow {
-    @apply bg-primary-foreground/15;
   }
 
   .bento-card-static {

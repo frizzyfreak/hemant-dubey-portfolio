@@ -1,4 +1,5 @@
 import { Award, Trophy, Briefcase } from "lucide-react";
+import MagnifyText from "./MagnifyText";
 
 const achievements = [
   {
@@ -40,9 +41,11 @@ const AchievementsCard = () => {
             </div>
             <div>
               <h3 className="font-medium text-xs text-foreground">
-                {achievement.title}
+                <MagnifyText text={achievement.title} />
               </h3>
-              <p className="text-[10px] text-muted-foreground">{achievement.description}</p>
+              <p className="text-[10px] text-muted-foreground">
+                <MagnifyText text={achievement.description} />
+              </p>
             </div>
           </div>
         ))}

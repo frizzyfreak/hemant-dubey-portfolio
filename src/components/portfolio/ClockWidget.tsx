@@ -21,7 +21,7 @@ const ClockWidget = () => {
   };
 
   return (
-    <div className="bento-card animate-fade-up flex flex-col items-center justify-center text-center py-4" style={{ animationDelay: "400ms" }}>
+    <div className="bento-card-hover animate-fade-up flex flex-col items-center justify-center text-center py-4" style={{ animationDelay: "400ms" }}>
       <h2 className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-3 self-start">Clock</h2>
       <div className="text-3xl font-bold tracking-widest text-foreground font-digital">
         {formatTime(time)}

@@ -1,4 +1,5 @@
 import { Briefcase } from "lucide-react";
+import MagnifyText from "./MagnifyText";
 
 interface ExperienceItem {
   title: string;
@@ -68,15 +69,21 @@ const ExperienceCard = () => {
               
               <div className="space-y-0.5">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-0.5">
-                  <h3 className="font-medium text-xs text-foreground">{exp.title}</h3>
+                  <h3 className="font-medium text-xs text-foreground">
+                    <MagnifyText text={exp.title} />
+                  </h3>
                   <span className="text-[9px] text-foreground bg-muted px-1.5 py-0.5 rounded-full w-fit experience-period">
                     {exp.period}
                   </span>
                 </div>
-                <p className="text-[10px] font-medium text-muted-foreground">{exp.company}</p>
+                <p className="text-[10px] font-medium text-muted-foreground">
+                  <MagnifyText text={exp.company} />
+                </p>
                 <ul className="text-[10px] text-muted-foreground leading-relaxed list-disc list-inside space-y-0.5 mt-1">
                   {exp.points.slice(0, 2).map((point, idx) => (
-                    <li key={idx}>{point}</li>
+                    <li key={idx}>
+                      <MagnifyText text={point} />
+                    </li>
                   ))}
                 </ul>
               </div>

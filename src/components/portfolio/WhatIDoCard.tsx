@@ -51,10 +51,17 @@ const WhatIDoCard = () => {
         return prevBubbles.map((bubble) => {
           let { x, y, vx, vy, width, height } = bubble;
 
-          // Normalize velocity to maintain constant speed of 0.8
+          // Gradually normalize velocity towards target speed of 0.8
           const currentSpeed = Math.sqrt(vx * vx + vy * vy);
           const targetSpeed = 0.8;
-          if (currentSpeed > 0) {
+          if (currentSpeed > targetSpeed) {
+            // Gradually slow down to target speed
+            const decayFactor = 0.98;
+            const newSpeed = Math.max(targetSpeed, currentSpeed * decayFactor);
+            vx = (vx / currentSpeed) * newSpeed;
+            vy = (vy / currentSpeed) * newSpeed;
+          } else if (currentSpeed > 0 && currentSpeed < targetSpeed) {
+            // Speed up to target speed
             vx = (vx / currentSpeed) * targetSpeed;
             vy = (vy / currentSpeed) * targetSpeed;
           }

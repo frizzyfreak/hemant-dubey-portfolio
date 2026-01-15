@@ -112,6 +112,7 @@ const HoveringJet = () => {
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       onClick={handleClick}
+      data-journey-jet
     >
       <div className="relative w-full h-32 overflow-visible flex items-center justify-center">
         {/* F-22 Raptor style jet with reactive animation - centered */}

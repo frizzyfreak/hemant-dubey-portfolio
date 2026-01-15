@@ -51,7 +51,7 @@ const experiences: ExperienceItem[] = [
 
 const ExperienceCard = () => {
   return (
-    <div className="bento-card animate-fade-up relative" style={{ animationDelay: "200ms" }}>
+    <div className="bento-card animate-fade-up relative" style={{ animationDelay: "200ms" }} data-journey-experience>
       <div className="flex items-center gap-2 mb-3">
         <Briefcase className="w-3 h-3 text-foreground" />
         <h2 className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Experience</h2>

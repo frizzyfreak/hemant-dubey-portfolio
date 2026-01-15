@@ -10,6 +10,7 @@ const CatSilhouette = ({ position }: CatSilhouetteProps) => {
   const [currentSide, setCurrentSide] = useState<"left" | "right">(
     position === "top-left" ? "left" : "right"
   );
+  const [runProgress, setRunProgress] = useState(0); // 0 to 100
 
   useEffect(() => {
     const cleanInterval = setInterval(() => {
@@ -27,28 +28,77 @@ const CatSilhouette = ({ position }: CatSilhouetteProps) => {
     setIsCleaning(false);
     setIsRunning(true);
     
-    // Run to the other side
-    setTimeout(() => {
-      setCurrentSide(prev => prev === "left" ? "right" : "left");
-    }, 50);
+    const targetSide = currentSide === "left" ? "right" : "left";
+    const startTime = Date.now();
+    const duration = 800; // ms
     
-    // Stop running after animation completes
-    setTimeout(() => {
-      setIsRunning(false);
-    }, 600);
+    const animate = () => {
+      const elapsed = Date.now() - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      
+      // Ease out cubic for natural deceleration
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setRunProgress(eased * 100);
+      
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+      } else {
+        setCurrentSide(targetSide);
+        setRunProgress(0);
+        setIsRunning(false);
+      }
+    };
+    
+    requestAnimationFrame(animate);
   };
 
   const isLeft = currentSide === "left";
+  
+  // Calculate position based on run progress
+  // When running from left, progress goes 0->100 (left to right position)
+  // When running from right, progress goes 0->100 (right to left position)
+  const getPositionStyle = () => {
+    if (!isRunning) {
+      return {
+        left: isLeft ? '-4px' : 'auto',
+        right: isLeft ? 'auto' : '-4px',
+      };
+    }
+    
+    // During running, interpolate across the card
+    // calc(start + progress * (end - start))
+    if (currentSide === "left") {
+      // Running from left to right
+      return {
+        left: `calc(-4px + ${runProgress}% - ${runProgress * 0.32}px)`,
+        right: 'auto',
+      };
+    } else {
+      // Running from right to left
+      return {
+        left: 'auto',
+        right: `calc(-4px + ${runProgress}% - ${runProgress * 0.32}px)`,
+      };
+    }
+  };
+
+  // Flip direction: face right when running right, face left when running left
+  const getTransform = () => {
+    if (isRunning) {
+      // When running from left, face right (scaleX(1))
+      // When running from right, face left (scaleX(-1))
+      return currentSide === "left" ? 'scaleX(1)' : 'scaleX(-1)';
+    }
+    // When sitting, face inward toward the card
+    return isLeft ? 'scaleX(1)' : 'scaleX(-1)';
+  };
 
   return (
     <div 
-      className={`absolute -top-2 z-10 transition-all duration-500 ease-in-out ${
-        isLeft ? '-left-1' : '-right-1 left-auto'
-      }`}
+      className="absolute -top-2 z-10"
       style={{ 
-        transform: isLeft ? 'scaleX(1)' : 'scaleX(-1)',
-        left: isLeft ? '-4px' : 'auto',
-        right: isLeft ? 'auto' : '-4px',
+        transform: getTransform(),
+        ...getPositionStyle(),
       }}
       onMouseEnter={handleHover}
     >
@@ -72,13 +122,13 @@ const CatSilhouette = ({ position }: CatSilhouetteProps) => {
             
             {/* Running legs animation */}
             <ellipse cx="25" cy="62" rx="5" ry="8" 
-              style={{ animation: "legRun 0.15s ease-in-out infinite alternate" }} />
+              style={{ animation: "legRun 0.1s ease-in-out infinite alternate" }} />
             <ellipse cx="40" cy="62" rx="5" ry="8" 
-              style={{ animation: "legRun 0.15s ease-in-out infinite alternate-reverse" }} />
+              style={{ animation: "legRun 0.1s ease-in-out infinite alternate-reverse" }} />
             <ellipse cx="60" cy="62" rx="5" ry="8" 
-              style={{ animation: "legRun 0.15s ease-in-out infinite alternate" }} />
+              style={{ animation: "legRun 0.1s ease-in-out infinite alternate" }} />
             <ellipse cx="75" cy="62" rx="5" ry="8" 
-              style={{ animation: "legRun 0.15s ease-in-out infinite alternate-reverse" }} />
+              style={{ animation: "legRun 0.1s ease-in-out infinite alternate-reverse" }} />
             
             {/* Tail - streaming behind */}
             <path d="M80,45 Q95,35 100,50" />

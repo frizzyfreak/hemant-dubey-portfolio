@@ -136,7 +136,7 @@ const WhatIDoCard = () => {
   };
 
   return (
-    <div className="bento-card animate-fade-up" style={{ animationDelay: "600ms" }}>
+    <div className="bento-card animate-fade-up" style={{ animationDelay: "600ms" }} data-journey-whatido>
       <h2 className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-2">What I Do</h2>
       <div className="border-t border-border mb-3" />
       <div ref={containerRef} className="relative h-64 overflow-hidden cursor-pointer" onClick={handleContainerClick}>

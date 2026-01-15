@@ -87,13 +87,19 @@ const CatSilhouette = ({ position }: CatSilhouetteProps) => {
   };
 
   // Cat faces the direction it's running/sitting
+  // The SVG cat faces RIGHT by default (head on right side)
+  // scaleX(-1) flips it to face LEFT
   const getTransform = () => {
     if (isRunning) {
       // Face the direction we're running TO
-      return runningDirection === "right" ? 'scaleX(-1)' : 'scaleX(1)';
+      // Running right = face right = no flip (scaleX(1))
+      // Running left = face left = flip (scaleX(-1))
+      return runningDirection === "right" ? 'scaleX(1)' : 'scaleX(-1)';
     }
     // When sitting, face inward toward the card center
-    return isLeft ? 'scaleX(-1)' : 'scaleX(1)';
+    // If on left side, face right (toward center) = scaleX(1)
+    // If on right side, face left (toward center) = scaleX(-1)
+    return isLeft ? 'scaleX(1)' : 'scaleX(-1)';
   };
 
   return (

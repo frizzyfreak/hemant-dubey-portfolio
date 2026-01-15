@@ -141,7 +141,7 @@ const GitHubContributions = () => {
   }
 
   return (
-    <div className="bento-card animate-fade-up" style={{ animationDelay: "700ms" }}>
+    <div className="bento-card animate-fade-up" style={{ animationDelay: "700ms" }} data-journey-github>
       <div className="flex items-center justify-between mb-2">
         <h2 className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
           {totalContributions} contributions in the last year

@@ -7,10 +7,12 @@ interface CatSilhouetteProps {
 const CatSilhouette = ({ position }: CatSilhouetteProps) => {
   const [isCleaning, setIsCleaning] = useState(false);
   const [isRunning, setIsRunning] = useState(false);
+  const [showDust, setShowDust] = useState(false);
   const [currentSide, setCurrentSide] = useState<"left" | "right">(
     position === "top-left" ? "left" : "right"
   );
   const [runProgress, setRunProgress] = useState(0); // 0 to 100
+  const [runningDirection, setRunningDirection] = useState<"left" | "right">("right");
 
   useEffect(() => {
     const cleanInterval = setInterval(() => {
@@ -27,10 +29,16 @@ const CatSilhouette = ({ position }: CatSilhouetteProps) => {
     if (isRunning) return;
     setIsCleaning(false);
     setIsRunning(true);
+    setShowDust(true);
     
     const targetSide = currentSide === "left" ? "right" : "left";
+    setRunningDirection(targetSide); // Cat runs TOWARD the target side
+    
     const startTime = Date.now();
     const duration = 800; // ms
+    
+    // Hide dust after initial burst
+    setTimeout(() => setShowDust(false), 400);
     
     const animate = () => {
       const elapsed = Date.now() - startTime;
@@ -55,8 +63,6 @@ const CatSilhouette = ({ position }: CatSilhouetteProps) => {
   const isLeft = currentSide === "left";
   
   // Calculate position based on run progress
-  // When running from left, progress goes 0->100 (left to right position)
-  // When running from right, progress goes 0->100 (right to left position)
   const getPositionStyle = () => {
     if (!isRunning) {
       return {
@@ -65,8 +71,6 @@ const CatSilhouette = ({ position }: CatSilhouetteProps) => {
       };
     }
     
-    // During running, interpolate across the card
-    // calc(start + progress * (end - start))
     if (currentSide === "left") {
       // Running from left to right
       return {
@@ -82,15 +86,14 @@ const CatSilhouette = ({ position }: CatSilhouetteProps) => {
     }
   };
 
-  // Flip direction: face right when running right, face left when running left
+  // Cat faces the direction it's running/sitting
   const getTransform = () => {
     if (isRunning) {
-      // When running from left, face right (scaleX(1))
-      // When running from right, face left (scaleX(-1))
-      return currentSide === "left" ? 'scaleX(1)' : 'scaleX(-1)';
+      // Face the direction we're running TO
+      return runningDirection === "right" ? 'scaleX(-1)' : 'scaleX(1)';
     }
-    // When sitting, face inward toward the card
-    return isLeft ? 'scaleX(1)' : 'scaleX(-1)';
+    // When sitting, face inward toward the card center
+    return isLeft ? 'scaleX(-1)' : 'scaleX(1)';
   };
 
   return (
@@ -102,23 +105,46 @@ const CatSilhouette = ({ position }: CatSilhouetteProps) => {
       }}
       onMouseEnter={handleHover}
     >
+      {/* Dust cloud effect */}
+      {showDust && (
+        <div 
+          className="absolute top-2"
+          style={{
+            // Dust appears behind the cat (opposite of running direction)
+            left: runningDirection === "right" ? '-20px' : 'auto',
+            right: runningDirection === "left" ? '-20px' : 'auto',
+          }}
+        >
+          <svg viewBox="0 0 40 30" className="w-6 h-4 fill-muted-foreground/40">
+            <circle cx="8" cy="20" r="6" style={{ animation: "dustPuff 0.4s ease-out forwards" }} />
+            <circle cx="18" cy="15" r="5" style={{ animation: "dustPuff 0.4s ease-out 0.05s forwards" }} />
+            <circle cx="28" cy="18" r="4" style={{ animation: "dustPuff 0.4s ease-out 0.1s forwards" }} />
+            <circle cx="12" cy="10" r="3" style={{ animation: "dustPuff 0.4s ease-out 0.08s forwards" }} />
+            <circle cx="24" cy="8" r="3" style={{ animation: "dustPuff 0.4s ease-out 0.12s forwards" }} />
+          </svg>
+        </div>
+      )}
+      
       <svg 
         viewBox="0 0 100 80" 
         className="w-8 h-6 fill-foreground cursor-pointer"
         style={{ filter: 'drop-shadow(0 1px 1px rgba(0,0,0,0.1))' }}
       >
         {isRunning ? (
-          // Running cat pose
+          // Running cat pose - head in front (toward running direction)
           <>
+            {/* Tail - streaming behind */}
+            <path d="M20,45 Q5,35 0,50" />
+            
             {/* Stretched body */}
             <ellipse cx="50" cy="50" rx="30" ry="15" />
             
-            {/* Head - slightly forward */}
-            <circle cx="20" cy="40" r="15" />
+            {/* Head - in front (right side since cat faces right) */}
+            <circle cx="80" cy="40" r="15" />
             
             {/* Ears */}
-            <polygon points="8,30 12,12 22,25" />
-            <polygon points="22,22 30,8 32,25" />
+            <polygon points="78,28 88,12 92,28" />
+            <polygon points="88,25 95,10 98,25" />
             
             {/* Running legs animation */}
             <ellipse cx="25" cy="62" rx="5" ry="8" 
@@ -129,49 +155,46 @@ const CatSilhouette = ({ position }: CatSilhouetteProps) => {
               style={{ animation: "legRun 0.1s ease-in-out infinite alternate" }} />
             <ellipse cx="75" cy="62" rx="5" ry="8" 
               style={{ animation: "legRun 0.1s ease-in-out infinite alternate-reverse" }} />
-            
-            {/* Tail - streaming behind */}
-            <path d="M80,45 Q95,35 100,50" />
           </>
         ) : (
           // Sitting cat pose
           <>
-            {/* Cat body - sitting pose */}
-            <ellipse cx="50" cy="55" rx="25" ry="20" />
-            
-            {/* Head */}
-            <circle cx="30" cy="35" r="18" />
-            
-            {/* Left ear */}
-            <polygon points="15,25 20,5 30,20" />
-            
-            {/* Right ear */}
-            <polygon points="35,15 45,0 45,20" />
-            
             {/* Tail with animation */}
             <path 
-              d="M75,50 Q90,35 95,45 Q100,55 90,55"
+              d="M25,50 Q10,35 5,45 Q0,55 10,55"
               className="origin-left"
               style={{
                 animation: "tailWag 0.8s ease-in-out infinite alternate",
-                transformOrigin: "75px 50px"
+                transformOrigin: "25px 50px"
               }}
             />
             
+            {/* Cat body - sitting pose */}
+            <ellipse cx="50" cy="55" rx="25" ry="20" />
+            
+            {/* Head - facing right (toward card center) */}
+            <circle cx="70" cy="35" r="18" />
+            
+            {/* Right ear */}
+            <polygon points="70,20 80,5 85,20" />
+            
+            {/* Left ear */}
+            <polygon points="55,25 65,0 70,15" />
+            
             {/* Front paws */}
-            <ellipse cx="35" cy="70" rx="8" ry="5" />
-            <ellipse cx="55" cy="70" rx="8" ry="5" />
+            <ellipse cx="45" cy="70" rx="8" ry="5" />
+            <ellipse cx="65" cy="70" rx="8" ry="5" />
             
             {/* Cleaning paw - shows when cleaning */}
             {isCleaning && (
               <ellipse 
-                cx="18" 
+                cx="82" 
                 cy="38" 
                 rx="6" 
                 ry="10"
                 style={{
                   animation: "pawClean 0.5s ease-in-out infinite",
-                  transformOrigin: "18px 48px"
+                  transformOrigin: "82px 48px"
                 }}
               />
             )}
@@ -185,12 +208,16 @@ const CatSilhouette = ({ position }: CatSilhouetteProps) => {
           to { transform: rotate(15deg); }
         }
         @keyframes pawClean {
-          0%, 100% { transform: rotate(-20deg) translateY(0); }
-          50% { transform: rotate(-20deg) translateY(-5px); }
+          0%, 100% { transform: rotate(20deg) translateY(0); }
+          50% { transform: rotate(20deg) translateY(-5px); }
         }
         @keyframes legRun {
           0% { transform: translateY(-3px) rotate(-10deg); }
           100% { transform: translateY(3px) rotate(10deg); }
+        }
+        @keyframes dustPuff {
+          0% { opacity: 0.6; transform: scale(0.5) translateY(0); }
+          100% { opacity: 0; transform: scale(1.5) translateY(-8px); }
         }
       `}</style>
     </div>

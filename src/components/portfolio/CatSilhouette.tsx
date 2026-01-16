@@ -1,52 +1,79 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 interface CatSilhouetteProps {
   position: "top-left" | "top-right";
 }
 
+interface PawPrint {
+  id: number;
+  x: number;
+  isLeft: boolean;
+}
+
 const CatSilhouette = ({ position }: CatSilhouetteProps) => {
   const [isCleaning, setIsCleaning] = useState(false);
   const [isRunning, setIsRunning] = useState(false);
+  const [isBouncing, setIsBouncing] = useState(false);
   const [showDust, setShowDust] = useState(false);
   const [currentSide, setCurrentSide] = useState<"left" | "right">(
     position === "top-left" ? "left" : "right"
   );
-  const [runProgress, setRunProgress] = useState(0); // 0 to 100
+  const [runProgress, setRunProgress] = useState(0);
   const [runningDirection, setRunningDirection] = useState<"left" | "right">("right");
+  const [pawPrints, setPawPrints] = useState<PawPrint[]>([]);
+  const pawPrintIdRef = useRef(0);
 
   useEffect(() => {
     const cleanInterval = setInterval(() => {
-      if (!isRunning) {
+      if (!isRunning && !isBouncing) {
         setIsCleaning(true);
         setTimeout(() => setIsCleaning(false), 2000);
       }
     }, 5000);
 
     return () => clearInterval(cleanInterval);
-  }, [isRunning]);
+  }, [isRunning, isBouncing]);
 
   const handleHover = () => {
     if (isRunning) return;
     setIsCleaning(false);
     setIsRunning(true);
     setShowDust(true);
+    setPawPrints([]);
     
     const targetSide = currentSide === "left" ? "right" : "left";
-    setRunningDirection(targetSide); // Cat runs TOWARD the target side
+    setRunningDirection(targetSide);
     
     const startTime = Date.now();
-    const duration = 800; // ms
+    const duration = 800;
+    let lastPawTime = 0;
+    let isLeftPaw = true;
     
-    // Hide dust after initial burst
     setTimeout(() => setShowDust(false), 400);
     
     const animate = () => {
       const elapsed = Date.now() - startTime;
       const progress = Math.min(elapsed / duration, 1);
       
-      // Ease out cubic for natural deceleration
       const eased = 1 - Math.pow(1 - progress, 3);
       setRunProgress(eased * 100);
+      
+      // Add paw prints every 100ms while running
+      if (elapsed - lastPawTime > 100 && progress < 0.95) {
+        lastPawTime = elapsed;
+        const newPawPrint: PawPrint = {
+          id: pawPrintIdRef.current++,
+          x: eased * 100,
+          isLeft: isLeftPaw,
+        };
+        isLeftPaw = !isLeftPaw;
+        setPawPrints(prev => [...prev, newPawPrint]);
+        
+        // Remove paw print after fade
+        setTimeout(() => {
+          setPawPrints(prev => prev.filter(p => p.id !== newPawPrint.id));
+        }, 600);
+      }
       
       if (progress < 1) {
         requestAnimationFrame(animate);
@@ -54,6 +81,9 @@ const CatSilhouette = ({ position }: CatSilhouetteProps) => {
         setCurrentSide(targetSide);
         setRunProgress(0);
         setIsRunning(false);
+        // Trigger bounce animation
+        setIsBouncing(true);
+        setTimeout(() => setIsBouncing(false), 400);
       }
     };
     
@@ -103,14 +133,48 @@ const CatSilhouette = ({ position }: CatSilhouetteProps) => {
   };
 
   return (
-    <div 
-      className="absolute -top-2 z-10"
-      style={{ 
-        transform: getTransform(),
-        ...getPositionStyle(),
-      }}
-      onMouseEnter={handleHover}
-    >
+    <>
+      {/* Paw prints trail */}
+      {pawPrints.map((paw) => (
+        <div
+          key={paw.id}
+          className="absolute -top-1 z-5 pointer-events-none"
+          style={{
+            left: currentSide === "left" 
+              ? `calc(-4px + ${paw.x}% - ${paw.x * 0.32}px)` 
+              : 'auto',
+            right: currentSide === "right" 
+              ? `calc(-4px + ${paw.x}% - ${paw.x * 0.32}px)` 
+              : 'auto',
+            animation: "pawFade 0.6s ease-out forwards",
+          }}
+        >
+          <svg 
+            viewBox="0 0 20 20" 
+            className="w-2 h-2 fill-foreground/20"
+            style={{ 
+              transform: `translateY(${paw.isLeft ? -2 : 2}px) scaleX(${runningDirection === "right" ? 1 : -1})` 
+            }}
+          >
+            {/* Main pad */}
+            <ellipse cx="10" cy="14" rx="5" ry="4" />
+            {/* Toe beans */}
+            <circle cx="5" cy="8" r="2" />
+            <circle cx="10" cy="6" r="2" />
+            <circle cx="15" cy="8" r="2" />
+          </svg>
+        </div>
+      ))}
+      
+      <div 
+        className="absolute -top-2 z-10"
+        style={{ 
+          transform: getTransform(),
+          animation: isBouncing ? "catBounce 0.4s ease-out" : undefined,
+          ...getPositionStyle(),
+        }}
+        onMouseEnter={handleHover}
+      >
       {/* Initial dust burst effect */}
       {showDust && (
         <div 
@@ -247,8 +311,20 @@ const CatSilhouette = ({ position }: CatSilhouetteProps) => {
           50% { opacity: 0.2; transform: scale(1.2) translateX(-4px); }
           100% { opacity: 0; transform: scale(0.8) translateX(-8px); }
         }
+        @keyframes catBounce {
+          0% { transform: ${getTransform()} translateY(0); }
+          30% { transform: ${getTransform()} translateY(-6px); }
+          50% { transform: ${getTransform()} translateY(0); }
+          70% { transform: ${getTransform()} translateY(-3px); }
+          100% { transform: ${getTransform()} translateY(0); }
+        }
+        @keyframes pawFade {
+          0% { opacity: 0.4; }
+          100% { opacity: 0; }
+        }
       `}</style>
-    </div>
+      </div>
+    </>
   );
 };
 

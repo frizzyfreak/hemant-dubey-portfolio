@@ -153,6 +153,17 @@ const CatSilhouette = ({ position }: CatSilhouetteProps) => {
         className="w-8 h-6 fill-foreground cursor-pointer"
         style={{ filter: 'drop-shadow(0 1px 1px rgba(0,0,0,0.1))' }}
       >
+        {/* Glow filter for dark mode eyes */}
+        <defs>
+          <filter id="glowEyes" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="1.5" result="coloredBlur"/>
+            <feMerge>
+              <feMergeNode in="coloredBlur"/>
+              <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+          </filter>
+        </defs>
+        
         {isRunning ? (
           // Running cat pose - head in front (toward running direction)
           <>
@@ -168,6 +179,13 @@ const CatSilhouette = ({ position }: CatSilhouetteProps) => {
             {/* Ears */}
             <polygon points="78,28 88,12 92,28" />
             <polygon points="88,25 95,10 98,25" />
+            
+            {/* Eyes - visible and glowing in dark mode */}
+            <ellipse cx="76" cy="38" rx="2.5" ry="3" className="fill-background dark:fill-green-400 dark:animate-pulse" style={{ filter: 'url(#glowEyes)' }} />
+            <ellipse cx="84" cy="38" rx="2.5" ry="3" className="fill-background dark:fill-green-400 dark:animate-pulse" style={{ filter: 'url(#glowEyes)' }} />
+            {/* Pupils */}
+            <ellipse cx="76" cy="38" rx="1" ry="2" className="fill-foreground dark:fill-green-900" />
+            <ellipse cx="84" cy="38" rx="1" ry="2" className="fill-foreground dark:fill-green-900" />
             
             {/* Running legs animation */}
             <ellipse cx="25" cy="62" rx="5" ry="8" 
@@ -203,6 +221,13 @@ const CatSilhouette = ({ position }: CatSilhouetteProps) => {
             
             {/* Left ear */}
             <polygon points="55,25 65,0 70,15" />
+            
+            {/* Eyes - visible and glowing in dark mode */}
+            <ellipse cx="66" cy="33" rx="3" ry="4" className="fill-background dark:fill-green-400 dark:animate-pulse" style={{ filter: 'url(#glowEyes)' }} />
+            <ellipse cx="76" cy="33" rx="3" ry="4" className="fill-background dark:fill-green-400 dark:animate-pulse" style={{ filter: 'url(#glowEyes)' }} />
+            {/* Pupils - vertical slits */}
+            <ellipse cx="66" cy="33" rx="1.2" ry="2.5" className="fill-foreground dark:fill-green-900" />
+            <ellipse cx="76" cy="33" rx="1.2" ry="2.5" className="fill-foreground dark:fill-green-900" />
             
             {/* Front paws */}
             <ellipse cx="45" cy="70" rx="8" ry="5" />

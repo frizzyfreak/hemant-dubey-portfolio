@@ -111,12 +111,11 @@ const CatSilhouette = ({ position }: CatSilhouetteProps) => {
       }}
       onMouseEnter={handleHover}
     >
-      {/* Dust cloud effect */}
+      {/* Initial dust burst effect */}
       {showDust && (
         <div 
           className="absolute top-2"
           style={{
-            // Dust appears behind the cat (opposite of running direction)
             left: runningDirection === "right" ? '-20px' : 'auto',
             right: runningDirection === "left" ? '-20px' : 'auto',
           }}
@@ -127,6 +126,24 @@ const CatSilhouette = ({ position }: CatSilhouetteProps) => {
             <circle cx="28" cy="18" r="4" style={{ animation: "dustPuff 0.4s ease-out 0.1s forwards" }} />
             <circle cx="12" cy="10" r="3" style={{ animation: "dustPuff 0.4s ease-out 0.08s forwards" }} />
             <circle cx="24" cy="8" r="3" style={{ animation: "dustPuff 0.4s ease-out 0.12s forwards" }} />
+          </svg>
+        </div>
+      )}
+      
+      {/* Continuous dust trail while running */}
+      {isRunning && (
+        <div 
+          className="absolute top-3"
+          style={{
+            left: runningDirection === "right" ? '-12px' : 'auto',
+            right: runningDirection === "left" ? '-12px' : 'auto',
+          }}
+        >
+          <svg viewBox="0 0 30 20" className="w-5 h-3 fill-muted-foreground/30">
+            <circle cx="6" cy="14" r="4" style={{ animation: "dustTrail 0.2s ease-out infinite" }} />
+            <circle cx="14" cy="10" r="3" style={{ animation: "dustTrail 0.2s ease-out 0.05s infinite" }} />
+            <circle cx="22" cy="12" r="2.5" style={{ animation: "dustTrail 0.2s ease-out 0.1s infinite" }} />
+            <circle cx="10" cy="6" r="2" style={{ animation: "dustTrail 0.2s ease-out 0.08s infinite" }} />
           </svg>
         </div>
       )}
@@ -224,6 +241,11 @@ const CatSilhouette = ({ position }: CatSilhouetteProps) => {
         @keyframes dustPuff {
           0% { opacity: 0.6; transform: scale(0.5) translateY(0); }
           100% { opacity: 0; transform: scale(1.5) translateY(-8px); }
+        }
+        @keyframes dustTrail {
+          0% { opacity: 0.4; transform: scale(1) translateX(0); }
+          50% { opacity: 0.2; transform: scale(1.2) translateX(-4px); }
+          100% { opacity: 0; transform: scale(0.8) translateX(-8px); }
         }
       `}</style>
     </div>

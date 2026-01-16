@@ -12,7 +12,7 @@ const MagnifyText: React.FC<MagnifyTextProps> = ({ text, className = "" }) => {
     <span className={className}>
       {words.map((word, index) => (
         <React.Fragment key={index}>
-          <span className="inline-block transition-all duration-200 hover:scale-[1.15] hover:font-bold cursor-default">
+          <span className="inline-block transition-all duration-200 hover:scale-[1.15] hover:font-bold hover:tracking-wider hover:text-primary cursor-default">
             {word}
           </span>
           {index < words.length - 1 && " "}

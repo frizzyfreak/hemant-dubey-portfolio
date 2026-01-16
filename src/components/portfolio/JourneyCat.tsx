@@ -91,34 +91,26 @@ const JourneyCat = () => {
     animationRef.current = requestAnimationFrame(animate);
   };
 
-  // Start the journey when dark mode toggle is clicked
+  // Start the journey automatically on page load
   useEffect(() => {
-    const handleThemeChange = () => {
-      if (step === 'hidden') {
-        // Get theme toggle position
-        const toggleBtn = document.querySelector('[data-journey-start]');
-        if (toggleBtn) {
-          const rect = toggleBtn.getBoundingClientRect();
-          setPosition({ 
-            x: rect.left + window.scrollX + rect.width / 2, 
-            y: rect.top + window.scrollY + rect.height 
-          });
-          setIsVisible(true);
-          setStep('emerging');
-        }
-      }
-    };
+    if (step !== 'hidden') return;
 
-    // Listen for theme toggle clicks
-    const toggleBtn = document.querySelector('[data-journey-start]');
-    if (toggleBtn) {
-      toggleBtn.addEventListener('click', handleThemeChange);
-    }
+    // Delay to ensure elements are mounted
+    const startTimeout = setTimeout(() => {
+      const toggleBtn = document.querySelector('[data-journey-start]');
+      if (toggleBtn) {
+        const rect = toggleBtn.getBoundingClientRect();
+        setPosition({ 
+          x: rect.left + window.scrollX + rect.width / 2, 
+          y: rect.top + window.scrollY + rect.height 
+        });
+        setIsVisible(true);
+        setStep('emerging');
+      }
+    }, 1500); // Start after 1.5 seconds
 
     return () => {
-      if (toggleBtn) {
-        toggleBtn.removeEventListener('click', handleThemeChange);
-      }
+      clearTimeout(startTimeout);
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current);
       }

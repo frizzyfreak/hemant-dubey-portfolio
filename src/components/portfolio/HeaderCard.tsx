@@ -37,7 +37,7 @@ const HeaderCard = () => {
           asChild
           className="rounded-full px-4 py-1.5 text-xs bg-primary text-primary-foreground hover:bg-primary/90 transition-all duration-200 hover:scale-105"
         >
-          <a href="mailto:hdubey_be22@thapar.edu">
+          <a href="mailto:hemantd107@gmail.com">
             <Mail className="w-3 h-3 mr-1.5" />
             Contact Me
           </a>

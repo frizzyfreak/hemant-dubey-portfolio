@@ -3,12 +3,13 @@ import { Button } from "@/components/ui/button";
 import ThemeToggle from "@/components/ThemeToggle";
 import TypingAnimation from "./TypingAnimation";
 import MagnifyText from "./MagnifyText";
+import resumeAsset from "@/assets/resume.pdf.asset.json";
 
 const HeaderCard = () => {
   const handleDownloadResume = () => {
     // Create a link to download the resume
     const link = document.createElement("a");
-    link.href = "/resume.pdf";
+    link.href = resumeAsset.url;
     link.download = "HemantDubey_Resume.pdf";
     link.click();
   };

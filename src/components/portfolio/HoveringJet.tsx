@@ -209,7 +209,7 @@ const HoveringJet = () => {
           
           {/* Exhaust trail - scales up during launch */}
           <div 
-            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-full flex items-center"
+            className="absolute left-8 top-1/2 -translate-y-1/2 -translate-x-full flex items-center"
             style={{
               transform: `translateX(-100%) translateY(-50%) scaleX(${exhaustScale})`,
               transformOrigin: 'right center',

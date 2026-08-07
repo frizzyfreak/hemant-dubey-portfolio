@@ -141,31 +141,75 @@ const HoveringJet = () => {
           </div>
           
           <svg 
-            viewBox="0 0 200 80" 
+            viewBox="0 0 200 90" 
             className="w-64 h-24 text-foreground fill-current"
           >
-            {/* F-22 Raptor silhouette */}
-            <path d="M195 40 L180 38 L175 35 L160 32 L140 30 L120 28 L80 26 L60 25 L40 24 L25 26 L15 30 L8 35 L5 40 L8 45 L15 50 L25 54 L40 56 L60 55 L80 54 L120 52 L140 50 L160 48 L175 45 L180 42 L195 40 Z" />
-            <path d="M195 40 L185 38 L185 42 L195 40 Z" className="fill-muted/50" />
-            <ellipse cx="165" cy="40" rx="15" ry="5" className="fill-muted" />
-            <ellipse cx="165" cy="40" rx="12" ry="3" className="fill-muted/70" />
-            <path d="M100 26 L50 5 L35 3 L30 5 L55 26 Z" />
-            <path d="M100 54 L50 75 L35 77 L30 75 L55 54 Z" />
-            <path d="M80 26 L60 12 L55 12 L70 26 Z" className="fill-muted/30" />
-            <path d="M80 54 L60 68 L55 68 L70 54 Z" className="fill-muted/30" />
-            <path d="M35 24 L25 8 L20 8 L18 10 L28 26 Z" />
-            <path d="M35 56 L25 72 L20 72 L18 70 L28 54 Z" />
-            <path d="M45 26 L35 18 L30 18 L38 26 Z" />
-            <path d="M45 54 L35 62 L30 62 L38 54 Z" />
-            <ellipse cx="85" cy="34" rx="10" ry="3" className="fill-muted/40" />
-            <ellipse cx="85" cy="46" rx="10" ry="3" className="fill-muted/40" />
-            <ellipse cx="18" cy="35" rx="4" ry="2" className="fill-muted/60" />
-            <ellipse cx="18" cy="45" rx="4" ry="2" className="fill-muted/60" />
+            {/* Side-profile fighter jet (nose to the right) */}
+
+            {/* Far-side wing & stabilizer (depth) */}
+            <path d="M118 46 L74 38 L52 36 L60 46 Z" className="fill-muted/40" />
+            <path d="M56 45 L30 36 L22 36 L34 46 Z" className="fill-muted/40" />
+
+            {/* Vertical stabilizer (twin tail, far side) */}
+            <path d="M58 40 L40 8 L32 8 L34 40 Z" className="fill-muted/50" />
+
+            {/* Main fuselage */}
+            <path d="M196 46 
+                     C186 43 176 41 166 40 
+                     L142 37 L120 36 L96 36 L74 37 L52 39 L34 41 L24 42 
+                     L22 50 L24 55 L34 56 L52 57 L74 57 L96 58 L120 58 L142 57 
+                     L166 54 C176 52 186 49 196 46 Z" />
+
+            {/* Nose cone highlight */}
+            <path d="M196 46 C188 44 182 43 176 42.5 L176 50 C182 49 188 47.5 196 46 Z" className="fill-muted/50" />
+
+            {/* Canopy */}
+            <path d="M164 39 C158 28 142 25 130 27 L124 36 L160 40 Z" className="fill-muted" />
+            <path d="M161 38 C156 30 144 27.5 134 29 L130 35 L158 38.5 Z" className="fill-muted/60" />
+            {/* Canopy frame */}
+            <path d="M141 26.5 L136 36 L138 36 L143 27 Z" className="fill-muted/80" />
+
+            {/* Cockpit spine / fairing behind canopy */}
+            <path d="M124 36 L100 34 L78 35 L60 38 L60 40 L124 39 Z" className="fill-muted/30" />
+
+            {/* Air intake (under fuselage) */}
+            <path d="M138 58 L138 70 L104 70 L98 58 Z" />
+            <path d="M136 60 L136 68 L108 68 L104 60 Z" className="fill-muted/60" />
+
+            {/* Near wing (delta, swept) */}
+            <path d="M122 55 L86 74 L58 76 L66 56 Z" />
+            <path d="M112 57 L88 71 L74 72 L78 57 Z" className="fill-muted/25" />
+            {/* Wing pylon + missile */}
+            <path d="M92 70 L92 76 L96 76 L96 70 Z" className="fill-muted/70" />
+            <path d="M78 76 L104 76 L108 78 L104 80 L78 80 L74 78 Z" className="fill-muted/70" />
+
+            {/* Horizontal stabilizer (near) */}
+            <path d="M56 54 L28 66 L14 66 L26 54 Z" />
+
+            {/* Vertical stabilizer (near, canted) */}
+            <path d="M62 40 L44 6 L34 6 L30 10 L38 40 Z" />
+            <path d="M56 34 L44 12 L40 12 L46 34 Z" className="fill-muted/30" />
+
+            {/* Ventral fin */}
+            <path d="M40 56 L28 72 L22 72 L28 56 Z" className="fill-muted/60" />
+
+            {/* Engine exhaust nozzle */}
+            <ellipse cx="23" cy="48.5" rx="5" ry="7" className="fill-muted" />
+            <ellipse cx="22" cy="48.5" rx="3" ry="5" className="fill-muted/70" />
+            <path d="M28 41 L22 42 L20 44 M28 56 L22 55 L20 53" className="stroke-muted/80" strokeWidth="0.8" fill="none" />
+
+            {/* Panel lines & details */}
+            <path d="M170 43 L120 42 M170 51 L110 51 M96 40 L60 42" className="stroke-muted/50" strokeWidth="0.7" fill="none" />
+            <circle cx="150" cy="49" r="1.6" className="fill-muted/60" />
+            <circle cx="156" cy="49" r="1.2" className="fill-muted/50" />
+            <path d="M196 46 L200 46" className="stroke-muted-foreground/70" strokeWidth="1" fill="none" />
           </svg>
+          
+
           
           {/* Exhaust trail - scales up during launch */}
           <div 
-            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-full flex items-center"
+            className="absolute left-8 top-1/2 -translate-y-1/2 -translate-x-full flex items-center"
             style={{
               transform: `translateX(-100%) translateY(-50%) scaleX(${exhaustScale})`,
               transformOrigin: 'right center',

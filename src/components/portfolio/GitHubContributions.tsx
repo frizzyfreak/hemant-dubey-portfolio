@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { ChevronDown } from "lucide-react";
 
 interface ContributionDay {
   date: string;
@@ -142,70 +143,79 @@ const GitHubContributions = () => {
 
   return (
     <div className="bento-card animate-fade-up" style={{ animationDelay: "700ms" }} data-journey-github>
-      <div className="flex items-center justify-between mb-2">
-        <h2 className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-          {totalContributions} contributions in the last year
+      {/* Header */}
+      <div className="flex items-center justify-between mb-3">
+        <h2 className="text-sm sm:text-base font-normal text-foreground">
+          {totalContributions} contributions in 2025
         </h2>
-        <a 
+        <a
           href={`https://github.com/${GITHUB_USERNAME}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-[10px] text-primary hover:underline"
+          className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors"
         >
-          @{GITHUB_USERNAME}
+          Contribution settings
+          <ChevronDown className="w-3 h-3" />
         </a>
       </div>
-      <div className="border-t border-border mb-3" />
-      
-      {/* Month labels */}
-      <div className="flex mb-1 ml-7">
-        {months.map((month, index) => (
-          <div
-            key={index}
-            className="text-[8px] text-muted-foreground flex-1 text-center"
-          >
-            {month}
-          </div>
-        ))}
-      </div>
-      
-      <div className="flex">
-        {/* Day labels */}
-        <div className="flex flex-col justify-around mr-1 h-[56px]">
-          {days.map((day) => (
-            <span key={day} className="text-[8px] text-muted-foreground leading-none">
-              {day}
-            </span>
-          ))}
-        </div>
-        
-        {/* Contribution grid */}
-        <div className="flex gap-[1px] flex-1">
-          {contributions.map((week, weekIndex) => (
-            <div key={weekIndex} className="flex flex-col gap-[1px] flex-1">
-              {week.map((level, dayIndex) => (
-                <div
-                  key={`${weekIndex}-${dayIndex}`}
-                  className={`aspect-square rounded-[1px] ${getContributionColor(level)} transition-all duration-200 hover:scale-150 hover:ring-1 hover:ring-primary/50`}
-                  title={`Level ${level} contributions`}
-                />
-              ))}
+
+      {/* Panel */}
+      <div className="rounded-md border border-border p-3">
+        {/* Month labels */}
+        <div className="flex mb-1 ml-7">
+          {months.map((month) => (
+            <div key={month} className="text-[10px] text-muted-foreground flex-1 text-center">
+              {month}
             </div>
           ))}
         </div>
-      </div>
-      
-      <div className="flex items-center justify-end mt-2 gap-1 text-[8px] text-muted-foreground">
-        <span>Less</span>
-        <div className="flex gap-[2px]">
-          {[0, 1, 2, 3, 4].map((level) => (
-            <div
-              key={level}
-              className={`w-2 h-2 rounded-[1px] ${getContributionColor(level)}`}
-            />
-          ))}
+
+        <div className="flex">
+          {/* Day labels */}
+          <div className="flex flex-col justify-around mr-1 h-[56px] w-6">
+            {days.map((day) => (
+              <span key={day} className="text-[10px] text-muted-foreground leading-none">
+                {day}
+              </span>
+            ))}
+          </div>
+
+          {/* Contribution grid */}
+          <div className="flex gap-[2px] flex-1">
+            {contributions.map((week, weekIndex) => (
+              <div key={weekIndex} className="flex flex-col gap-[2px] flex-1">
+                {week.map((level, dayIndex) => (
+                  <div
+                    key={`${weekIndex}-${dayIndex}`}
+                    className={`aspect-square rounded-[2px] ${getContributionColor(level)} transition-all duration-200 hover:scale-150 hover:ring-1 hover:ring-primary/50`}
+                    title={`Level ${level} contributions`}
+                  />
+                ))}
+              </div>
+            ))}
+          </div>
         </div>
-        <span>More</span>
+
+        {/* Footer */}
+        <div className="flex items-center justify-between mt-3">
+          <a
+            href="https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-github-profile/managing-contribution-settings-on-your-profile/viewing-contributions-on-your-profile"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[10px] text-muted-foreground hover:text-primary hover:underline"
+          >
+            Learn how we count contributions
+          </a>
+          <div className="flex items-center gap-1 text-[10px] text-muted-foreground">
+            <span>Less</span>
+            <div className="flex gap-[2px]">
+              {[0, 1, 2, 3, 4].map((level) => (
+                <div key={level} className={`w-2.5 h-2.5 rounded-[2px] ${getContributionColor(level)}`} />
+              ))}
+            </div>
+            <span>More</span>
+          </div>
+        </div>
       </div>
     </div>
   );

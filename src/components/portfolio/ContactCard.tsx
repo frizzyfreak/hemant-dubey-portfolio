@@ -3,7 +3,7 @@ import { Mail, Linkedin, Github, ArrowUpRight, Code2 } from "lucide-react";
 const contacts = [
   {
     label: "Email",
-    href: "mailto:hdubey_be22@thapar.edu",
+    href: "mailto:hemantd107@gmail.com",
     icon: Mail,
     iconColor: "text-red-500",
     hoverBg: "hover:bg-red-50 dark:hover:bg-red-950/30",

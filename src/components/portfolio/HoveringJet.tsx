@@ -156,8 +156,8 @@ const HoveringJet = () => {
         <div 
           className={`relative ${launchPhase === 'charging' ? 'animate-pulse' : ''}`}
           style={{
-            transform: `translateX(${launchX.current}px) translateY(${launchPhase === 'launching' ? launchY.current : jetY}px) rotate(${jetTilt}deg)`,
-            transition: launchPhase === 'charging' ? 'transform 0.1s ease-out' : 'none',
+            transform: `translate3d(${launchX.current}px, ${launchPhase === 'launching' ? launchY.current : jetY}px, 0) rotate(${jetTilt}deg)`,
+            willChange: 'transform',
           }}
         >
           {/* Speed lines / motion blur behind jet */}

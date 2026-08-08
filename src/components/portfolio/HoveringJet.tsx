@@ -248,14 +248,17 @@ const HoveringJet = () => {
           <div 
             className="absolute left-8 top-1/2 -translate-y-1/2 -translate-x-full flex items-center"
             style={{
-              transform: `translateX(-100%) translateY(-50%) scaleX(${exhaustScale})`,
+              transform: `translateX(-100%) translateY(-50%) scaleX(${exhaustScale}) scaleY(${1 + (flicker - 1) * 0.6})`,
               transformOrigin: 'right center',
-              transition: 'transform 0.2s ease-out'
+              opacity: 0.9 + (flicker - 1) * 0.5,
+              filter: `blur(${0.4 + Math.abs(flicker - 1) * 3}px)`,
+              willChange: 'transform, opacity',
             }}
           >
-            <div className={`w-20 h-3 bg-gradient-to-l from-orange-500 via-orange-400 to-yellow-300 rounded-full animate-pulse ${launchPhase === 'launching' ? 'opacity-100' : 'opacity-90'}`} />
-            <div className={`w-12 h-2 bg-gradient-to-l from-yellow-300 via-yellow-200 to-transparent rounded-full -ml-6 animate-pulse ${launchPhase === 'launching' ? 'opacity-90' : 'opacity-70'}`} />
-            <div className={`w-6 h-1 bg-gradient-to-l from-yellow-200 to-transparent rounded-full -ml-3 animate-pulse ${launchPhase === 'launching' ? 'opacity-70' : 'opacity-50'}`} />
+            <div className={`w-20 h-3 bg-gradient-to-l from-orange-500 via-orange-400 to-yellow-300 rounded-full ${launchPhase === 'launching' ? 'opacity-100' : 'opacity-90'}`} />
+            <div className={`w-12 h-2 bg-gradient-to-l from-yellow-300 via-yellow-200 to-transparent rounded-full -ml-6 ${launchPhase === 'launching' ? 'opacity-90' : 'opacity-70'}`} />
+            <div className={`w-6 h-1 bg-gradient-to-l from-yellow-200 to-transparent rounded-full -ml-3 ${launchPhase === 'launching' ? 'opacity-70' : 'opacity-50'}`} />
+
             {/* Extra flame during launch */}
             {(launchPhase === 'charging' || launchPhase === 'launching') && (
               <>

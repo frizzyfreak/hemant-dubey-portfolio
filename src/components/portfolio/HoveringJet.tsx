@@ -3,64 +3,100 @@ import { useState, useRef, useEffect } from "react";
 const HoveringJet = () => {
   const [jetY, setJetY] = useState(0);
   const [jetTilt, setJetTilt] = useState(0);
+  const [flicker, setFlicker] = useState(1);
   const [isLaunching, setIsLaunching] = useState(false);
   const [launchPhase, setLaunchPhase] = useState<'idle' | 'charging' | 'launching' | 'gone'>('idle');
   const containerRef = useRef<HTMLDivElement>(null);
   const targetY = useRef(0);
   const currentY = useRef(0);
+  const velocityY = useRef(0);
   const targetTilt = useRef(0);
   const currentTilt = useRef(0);
+  const velocityTilt = useRef(0);
   const launchX = useRef(0);
   const launchY = useRef(0);
+  const isHovering = useRef(false);
 
   useEffect(() => {
     let animationId: number;
-    
-    const animate = () => {
+    let last = performance.now();
+    const start = last;
+
+    const reduceMotion =
+      typeof window !== 'undefined' &&
+      window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+
+    const animate = (now: number) => {
+      // Normalize delta so physics stay identical across refresh rates
+      const dt = Math.min((now - last) / 16.6667, 3);
+      last = now;
+      const t = (now - start) / 1000;
+
       if (launchPhase === 'idle' || launchPhase === 'charging') {
-        // Normal hover animation
-        currentY.current += (targetY.current - currentY.current) * 0.08;
-        currentTilt.current += (targetTilt.current - currentTilt.current) * 0.1;
+        // Gentle idle bobbing so the jet always feels airborne
+        const bob = isHovering.current || reduceMotion ? 0 : Math.sin(t * 1.4) * 4;
+        const bobTilt = isHovering.current || reduceMotion ? 0 : Math.sin(t * 1.4 + 0.6) * 1.2;
+
+        // Critically-damped spring: smooth arrival, no overshoot jitter
+        const springY = 0.05;
+        const dampY = 0.82;
+        velocityY.current += (targetY.current + bob - currentY.current) * springY * dt;
+        velocityY.current *= Math.pow(dampY, dt);
+        currentY.current += velocityY.current * dt;
+
+        const springT = 0.07;
+        const dampT = 0.8;
+        velocityTilt.current += (targetTilt.current + bobTilt - currentTilt.current) * springT * dt;
+        velocityTilt.current *= Math.pow(dampT, dt);
+        currentTilt.current += velocityTilt.current * dt;
+
         setJetY(currentY.current);
         setJetTilt(currentTilt.current);
       } else if (launchPhase === 'launching') {
         // Launch animation - accelerate to the right and slightly up
-        launchX.current += launchX.current * 0.08 + 8;
-        launchY.current -= 2;
-        currentTilt.current += (15 - currentTilt.current) * 0.15; // Nose up during launch
+        launchX.current += (launchX.current * 0.08 + 8) * dt;
+        launchY.current -= 2 * dt;
+        currentTilt.current += (15 - currentTilt.current) * 0.15 * dt;
         setJetTilt(currentTilt.current);
-        
+
         // Check if jet is off screen
         if (launchX.current > window.innerWidth + 500) {
           setLaunchPhase('gone');
         }
       }
-      
+
+      // Layered sine flicker (non-repeating feel) for the exhaust flame
+      if (!reduceMotion) {
+        const base =
+          Math.sin(t * 21.3) * 0.5 +
+          Math.sin(t * 34.7 + 1.3) * 0.3 +
+          Math.sin(t * 57.1 + 2.4) * 0.2;
+        const amount = launchPhase === 'launching' ? 0.14 : launchPhase === 'charging' ? 0.11 : 0.07;
+        setFlicker(1 + base * amount);
+      }
+
       animationId = requestAnimationFrame(animate);
     };
-    
+
     animationId = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(animationId);
   }, [launchPhase]);
 
   const handleMouseMove = (e: React.MouseEvent) => {
     if (!containerRef.current || launchPhase !== 'idle') return;
-    
+
+    isHovering.current = true;
     const rect = containerRef.current.getBoundingClientRect();
     const mouseY = e.clientY - rect.top;
-    const containerHeight = rect.height;
-    const jetCenter = containerHeight / 2;
-    
-    if (mouseY > jetCenter) {
-      targetY.current = -30;
-      targetTilt.current = -8;
-    } else {
-      targetY.current = 30;
-      targetTilt.current = 8;
-    }
+    // Proportional response: the jet eases away from the cursor
+    const offset = (mouseY - rect.height / 2) / (rect.height / 2);
+    const clamped = Math.max(-1, Math.min(1, offset));
+    targetY.current = -clamped * 32;
+    targetTilt.current = -clamped * 9;
   };
 
   const handleMouseLeave = () => {
+    isHovering.current = false;
     if (launchPhase !== 'idle') return;
     targetY.current = 0;
     targetTilt.current = 0;
@@ -83,11 +119,12 @@ const HoveringJet = () => {
 
   // Calculate speed line opacity based on movement or launch
   const speedLineIntensity = launchPhase === 'launching' ? 1 : 
-    launchPhase === 'charging' ? 0.6 : Math.abs(jetY) / 30;
+    launchPhase === 'charging' ? 0.6 : Math.min(1, Math.abs(jetY) / 30);
 
   // Calculate exhaust intensity
-  const exhaustScale = launchPhase === 'launching' ? 2.5 : 
-    launchPhase === 'charging' ? 1.8 : 1;
+  const exhaustScale = (launchPhase === 'launching' ? 2.5 : 
+    launchPhase === 'charging' ? 1.8 : 1) * flicker;
+
 
   if (launchPhase === 'gone') {
     return (
@@ -119,8 +156,8 @@ const HoveringJet = () => {
         <div 
           className={`relative ${launchPhase === 'charging' ? 'animate-pulse' : ''}`}
           style={{
-            transform: `translateX(${launchX.current}px) translateY(${launchPhase === 'launching' ? launchY.current : jetY}px) rotate(${jetTilt}deg)`,
-            transition: launchPhase === 'charging' ? 'transform 0.1s ease-out' : 'none',
+            transform: `translate3d(${launchX.current}px, ${launchPhase === 'launching' ? launchY.current : jetY}px, 0) rotate(${jetTilt}deg)`,
+            willChange: 'transform',
           }}
         >
           {/* Speed lines / motion blur behind jet */}
@@ -211,14 +248,17 @@ const HoveringJet = () => {
           <div 
             className="absolute left-8 top-1/2 -translate-y-1/2 -translate-x-full flex items-center"
             style={{
-              transform: `translateX(-100%) translateY(-50%) scaleX(${exhaustScale})`,
+              transform: `translateX(-100%) translateY(-50%) scaleX(${exhaustScale}) scaleY(${1 + (flicker - 1) * 0.6})`,
               transformOrigin: 'right center',
-              transition: 'transform 0.2s ease-out'
+              opacity: 0.9 + (flicker - 1) * 0.5,
+              filter: `blur(${0.4 + Math.abs(flicker - 1) * 3}px)`,
+              willChange: 'transform, opacity',
             }}
           >
-            <div className={`w-20 h-3 bg-gradient-to-l from-orange-500 via-orange-400 to-yellow-300 rounded-full animate-pulse ${launchPhase === 'launching' ? 'opacity-100' : 'opacity-90'}`} />
-            <div className={`w-12 h-2 bg-gradient-to-l from-yellow-300 via-yellow-200 to-transparent rounded-full -ml-6 animate-pulse ${launchPhase === 'launching' ? 'opacity-90' : 'opacity-70'}`} />
-            <div className={`w-6 h-1 bg-gradient-to-l from-yellow-200 to-transparent rounded-full -ml-3 animate-pulse ${launchPhase === 'launching' ? 'opacity-70' : 'opacity-50'}`} />
+            <div className={`w-20 h-3 bg-gradient-to-l from-orange-500 via-orange-400 to-yellow-300 rounded-full ${launchPhase === 'launching' ? 'opacity-100' : 'opacity-90'}`} />
+            <div className={`w-12 h-2 bg-gradient-to-l from-yellow-300 via-yellow-200 to-transparent rounded-full -ml-6 ${launchPhase === 'launching' ? 'opacity-90' : 'opacity-70'}`} />
+            <div className={`w-6 h-1 bg-gradient-to-l from-yellow-200 to-transparent rounded-full -ml-3 ${launchPhase === 'launching' ? 'opacity-70' : 'opacity-50'}`} />
+
             {/* Extra flame during launch */}
             {(launchPhase === 'charging' || launchPhase === 'launching') && (
               <>

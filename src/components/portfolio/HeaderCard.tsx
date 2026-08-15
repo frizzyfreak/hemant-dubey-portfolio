@@ -21,7 +21,7 @@ const HeaderCard = () => {
           <MagnifyText text="Hemant Dubey" />
         </h1>
         <p className="text-muted-foreground text-xs uppercase tracking-wider">
-          <TypingAnimation text="Product Management. Designing. GenAI Enthusiast." />
+          <TypingAnimation text="Engineer by education, an AI enthusiast by interest, and a product person by experience." />
         </p>
       </div>
       <div className="flex items-center gap-2 sm:gap-3">

@@ -12,7 +12,7 @@ const experiences: ExperienceItem[] = [
   {
     title: "Product Manager Intern",
     company: "AdvantageClub.ai",
-    period: "Jan 2026 - June 2026",
+    period: "Jan 2026 - Sept 2026",
     points: [
       "Spearheaded end-to-end product implementation for 10+ enterprise clients, streamlining Rewards & Recognition (RNR) system.",
       "Defined business logic, configured platform workflows, integrated user data via APIs, and conducted rigorous UAT before deployment.",

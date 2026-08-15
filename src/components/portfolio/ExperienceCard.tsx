@@ -21,7 +21,7 @@ const experiences: ExperienceItem[] = [
   {
     title: "Software Management Engineer",
     company: "TechEagles",
-    period: "Sept 2025 - Present",
+    period: "Sept'25 - Dec'25",
     points: [
       "Founding team member providing SaaS solutions to freelancing community.",
       "Secured role based on outstanding internship performance at DRDO.",
